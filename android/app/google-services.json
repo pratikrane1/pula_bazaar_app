@@ -1,0 +1,70 @@
+{
+  "project_info": {
+    "project_number": "943340280765",
+    "project_id": "pula-bazaar",
+    "storage_bucket": "pula-bazaar.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:943340280765:android:7db4a0b3901f9e70e350d4",
+        "android_client_info": {
+          "package_name": "com.pula.bazaar"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "943340280765-2u4ptv84f7124tt23pd744am6falvg6q.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.pula.bazaar",
+            "certificate_hash": "a1aa3cbcd6b28e198618e0975fa267cf31634ef4"
+          }
+        },
+        {
+          "client_id": "943340280765-n3fvh89t5pavbd0d9kbnhn4mtimdrjvb.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.pula.bazaar",
+            "certificate_hash": "62650c2f66ef2c56147366b81dd3794064863290"
+          }
+        },
+        {
+          "client_id": "943340280765-se7jpome47398pv0c0afbtp6tq600ocj.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.pula.bazaar",
+            "certificate_hash": "38dc07dd84ba23605d491bcf60b03b4fc29317bc"
+          }
+        },
+        {
+          "client_id": "943340280765-o40oev5n0d0tmahnih5p17pls0l7cbhr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCPet-L3vDbIisM3JpvQxN8d_-k34dPByo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "943340280765-o40oev5n0d0tmahnih5p17pls0l7cbhr.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "943340280765-hj8700lrjdlppbq7hqfcarq3gj40qlm3.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.pula.bazar.com"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
