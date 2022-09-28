@@ -52,6 +52,8 @@ class ApiClient extends GetxService {
     };
     if(moduleID != null) {
       _header.addAll({AppConstants.MODULE_ID: moduleID.toString()});
+    }else{
+      _header.addAll({AppConstants.MODULE_ID: 1.toString()});
     }
     _mainHeaders = _header;
   }

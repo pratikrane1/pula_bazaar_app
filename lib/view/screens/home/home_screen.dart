@@ -191,7 +191,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
 
                 // Search Button
-                !_showMobileModule ? SliverPersistentHeader(
+                // !_showMobileModule ?
+                SliverPersistentHeader(
                   pinned: true,
                   delegate: SliverDelegate(child: Center(child: Container(
                     height: 50, width: Dimensions.WEB_MAX_WIDTH,
@@ -223,7 +224,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ),
                   ))),
-                ) : SliverToBoxAdapter(),
+                ) ,
+                    // : SliverToBoxAdapter(),
 
                 SliverToBoxAdapter(
                   child: Center(child: SizedBox(
