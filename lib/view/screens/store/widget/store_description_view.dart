@@ -18,6 +18,8 @@ import 'dart:io' show Platform;
 
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../../../main.dart';
+
 
 class StoreDescriptionView extends StatelessWidget {
   final Store store;
@@ -53,7 +55,7 @@ class StoreDescriptionView extends StatelessWidget {
 
   Future<void> shareReferralCode() async {
     await Share.share(
-      'https://tech.pulabazaar.in',
+      'https://pulabazaarapp.page.link/test',
       subject: 'Store URL'
     );
   }
@@ -129,7 +131,11 @@ class StoreDescriptionView extends StatelessWidget {
             }),
             SizedBox(width: Dimensions.PADDING_SIZE_SMALL),
             InkWell(
-              onTap: () => shareReferralCode(),
+              // onTap: () => shareReferralCode(),
+              onTap: () {
+                DynamicLinkService().shareProductLink(
+                    productUrl: '${Get.find<SplashController>().configModel.baseUrls.storeImageUrl}/${store.name}/${store.id}');
+              },
               child: ResponsiveHelper.isDesktop(context) ? Container(
                 padding: EdgeInsets.all(Dimensions.PADDING_SIZE_SMALL),
                 decoration: BoxDecoration(borderRadius: BorderRadius.circular(Dimensions.RADIUS_DEFAULT), color: Theme.of(context).primaryColor),

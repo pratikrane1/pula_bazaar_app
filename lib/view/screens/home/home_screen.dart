@@ -1,3 +1,4 @@
+import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:sixam_mart/controller/auth_controller.dart';
 import 'package:sixam_mart/controller/banner_controller.dart';
 import 'package:sixam_mart/controller/campaign_controller.dart';
@@ -31,7 +32,12 @@ import 'package:get/get.dart';
 import 'package:sixam_mart/view/screens/home/widget/module_view.dart';
 import 'package:sixam_mart/view/screens/parcel/parcel_category_screen.dart';
 
+import '../../../main.dart';
+
+
 class HomeScreen extends StatefulWidget {
+
+
 
   static Future<void> loadData(bool reload) async {
     if(Get.find<SplashController>().module != null && !Get.find<SplashController>().configModel.moduleConfig.module.isParcel) {
@@ -71,9 +77,13 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
+    DynamicLinkService().initDynamicLinks();
 
     HomeScreen.loadData(false);
   }
+
+
+
 
   @override
   void dispose() {

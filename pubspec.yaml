@@ -47,6 +47,8 @@ dependencies:
   image_compression_flutter: ^1.0.2
   dotted_border: ^2.0.0+1
   share_plus: ^4.0.10
+  firebase_dynamic_links: ^4.3.8
+  fluttertoast: ^8.0.9
 
 dev_dependencies:
   flutter_test:

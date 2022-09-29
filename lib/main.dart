@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:io';
+import 'package:share_plus/share_plus.dart';
 import 'package:sixam_mart/controller/auth_controller.dart';
 import 'package:sixam_mart/controller/cart_controller.dart';
 import 'package:sixam_mart/controller/localization_controller.dart';
@@ -22,6 +23,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
 import 'package:url_strategy/url_strategy.dart';
 import 'helper/get_di.dart' as di;
+import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
 
@@ -40,6 +42,14 @@ Future<void> main() async {
     ));
   }
   await Firebase.initializeApp();
+
+  // await Firebase.initializeApp(options: DefaultFirebaseConfig.platformOptions);
+
+  // Get any initial links
+  DynamicLinkService().initDynamicLinks();
+  // final PendingDynamicLinkData initialLink =
+  // await FirebaseDynamicLinks.instance.getInitialLink();
+
   Map<String, Map<String, String>> _languages = await di.init();
 
   int _orderID;
@@ -69,6 +79,8 @@ class MyApp extends StatelessWidget {
   final Map<String, Map<String, String>> languages;
   final int orderID;
   MyApp({@required this.languages, @required this.orderID});
+
+
 
   void _route() {
     Get.find<SplashController>().getConfigData().then((bool isSuccess) async {
@@ -124,4 +136,176 @@ class MyHttpOverrides extends HttpOverrides {
   HttpClient createHttpClient(SecurityContext context) {
     return super.createHttpClient(context)..badCertificateCallback = (X509Certificate cert, String host, int port) => true;
   }
+}
+
+class DynamicLinkService {
+  // final _service = Services();
+
+  String shortDynamicLink = 'https://pulabazaarapp.page.link/test';
+
+  @override
+  void shareDynamicLinkProduct({itemUrl}) {
+    DynamicLinkService().shareProductLink(
+      productUrl: itemUrl,
+    );
+  }
+
+  DynamicLinkParameters dynamicLinkParameters({String url}) {
+    return DynamicLinkParameters(
+      uriPrefix: shortDynamicLink,
+      link: Uri.parse(url),
+      androidParameters: AndroidParameters(
+        packageName: "com.pula.bazaar",
+        minimumVersion: 21,
+      ),
+      // iosParameters: IOSParameters(
+      //   bundleId: firebaseDynamicLinkConfig['iOSBundleId'],
+      //   minimumVersion: firebaseDynamicLinkConfig['iOSAppMinimumVersion'],
+      //   appStoreId: firebaseDynamicLinkConfig['iOSAppStoreId'],
+      // ),
+    );
+  }
+
+  Future<Uri> generateFirebaseDynamicLink(DynamicLinkParameters params) async {
+    var dynamicLinks = FirebaseDynamicLinks.instance;
+
+    if (shortDynamicLink==null) {
+      var shortDynamicLink = await dynamicLinks.buildShortLink(params);
+      return shortDynamicLink.shortUrl;
+    } else {
+      return await dynamicLinks.buildLink(params);
+    }
+  }
+
+  /// share product link that contains Dynamic link
+  void shareProductLink({
+    String productUrl,
+  }) async {
+    var productParams = dynamicLinkParameters(url: productUrl);
+    var firebaseDynamicLink = await generateFirebaseDynamicLink(productParams);
+    print('[firebase-dynamic-link] $firebaseDynamicLink');
+    await Share.share(
+      firebaseDynamicLink.toString(),
+    );
+  }
+
+   void initDynamicLinks() async {
+
+
+    var initialLink = await FirebaseDynamicLinks.instance.getInitialLink();
+    SnackBar(content: Text("$initialLink"),);
+
+    if (initialLink != null) {
+      final deepLink = initialLink.link;
+      print('[firebase-dynamic-link] getInitialLink: $deepLink');
+      SnackBar(content: Text("$deepLink"),);
+      await handleDynamicLink(deepLink.toString(), );
+    }
+
+     FirebaseDynamicLinks.instance.onLink.listen((dynamicLinkData) {
+       handleDynamicLink(dynamicLinkData.link.path, );
+     }).onError((e) {
+       print('[firebase-dynamic-link] error: ${e.message}');
+     });
+  }
+  //
+  //Navigate to ProductDetail screen by entering productURL
+  static Future<void> handleDynamicLink(
+      String url, ) async {
+    try {
+      // _showLoading(context);
+
+      /// PRODUCT CASE
+      if (url.contains('/store/')
+          ) {
+        /// Note: the deepLink URL will look like: https://mstore.io/product/stitch-detail-tunic-dress/
+        // final product = await Services().api.getProductByPermalink(url);
+        final product = url;
+        print(product);
+        // if (product != null) {
+        //   await Get.toNamed(
+        //     RouteHelper.getStoreRoute(id, isFeatured ? 'module' : 'store'),
+        //     arguments: StoreScreen(store: _storeList[index], fromModule: isFeatured),
+        //   );
+        // }
+
+        /// PRODUCT CATEGORY CASE
+      }
+        // else if (url.contains('/product-category/')) {
+      //   final category =
+      //   await Services().api.getProductCategoryByPermalink(url);
+      //   if (category != null) {
+      //     await FluxNavigate.pushNamed(
+      //       RouteList.backdrop,
+      //       arguments: BackDropArguments(
+      //         cateId: category.id,
+      //         cateName: category.name,
+      //       ),
+      //     );
+      //   }
+      //
+      //   /// VENDOR CASE
+      // } else if (url.contains('/store/')) {
+      //   final vendor = await Services().api.getStoreByPermalink(url);
+      //   if (vendor != null) {
+      //     await FluxNavigate.pushNamed(
+      //       RouteList.storeDetail,
+      //       arguments: StoreDetailArgument(store: vendor),
+      //     );
+      //   }
+      // } else {
+      //   var blog = await Services().api.getBlogByPermalink(url);
+      //   if (blog != null) {
+      //     await FluxNavigate.pushNamed(
+      //       RouteList.detailBlog,
+      //       arguments: BlogDetailArguments(blog: blog),
+      //     );
+      //   }
+      // }
+    } catch (err) {
+      // _showErrorMessage(context);
+    }
+  }
+  //
+  // static void _showLoading(context) {
+  //   ScaffoldMessenger.of(context).showSnackBar(
+  //     SnackBar(
+  //       content: Text(S.current.loadingLink),
+  //       duration: const Duration(seconds: 3),
+  //       action: SnackBarAction(
+  //         label: 'DISMISS',
+  //         onPressed: () {
+  //           ScaffoldMessenger.of(context).hideCurrentSnackBar();
+  //         },
+  //       ),
+  //     ),
+  //   );
+  // }
+  //
+  // static void _showErrorMessage(context) {
+  //   ScaffoldMessenger.of(context).showSnackBar(
+  //     SnackBar(
+  //       content: Text(S.current.canNotLoadThisLink),
+  //       duration: const Duration(seconds: 2),
+  //       action: SnackBarAction(
+  //         label: 'DISMISS',
+  //         onPressed: () {
+  //           ScaffoldMessenger.of(context).hideCurrentSnackBar();
+  //         },
+  //       ),
+  //     ),
+  //   );
+  // }
+
+
+
+  // Future<String> generateProductCategoryUrl(dynamic productCategoryId) async {
+  //   final cate = await _service.api
+  //       .getProductCategoryById(categoryId: productCategoryId);
+  //   var url;
+  //   if (cate != null) {
+  //     url = serverConfig['url'] + '/product-category/' + cate.slug;
+  //   }
+  //   return url;
+  // }
 }
