@@ -21,9 +21,14 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
+import 'package:sixam_mart/view/screens/location/access_location_screen.dart';
+import 'package:sixam_mart/view/screens/store/store_screen.dart';
+import 'package:sixam_mart/view/screens/update/update_screen.dart';
 import 'package:url_strategy/url_strategy.dart';
+import 'data/model/response/store_model.dart';
 import 'helper/get_di.dart' as di;
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
+import 'package:uni_links/uni_links.dart';
 
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
 
@@ -46,7 +51,7 @@ Future<void> main() async {
   // await Firebase.initializeApp(options: DefaultFirebaseConfig.platformOptions);
 
   // Get any initial links
-  DynamicLinkService().initDynamicLinks();
+  DynamicLinkService.initDynamicLinks();
   // final PendingDynamicLinkData initialLink =
   // await FirebaseDynamicLinks.instance.getInitialLink();
 
@@ -141,19 +146,30 @@ class MyHttpOverrides extends HttpOverrides {
 class DynamicLinkService {
   // final _service = Services();
 
-  String shortDynamicLink = 'https://pulabazaarapp.page.link/test';
+  String shortDynamicLink = 'https://pulabazaarapp.page.link';
+  // String shortDynamicLink = 'https://pulabazaarapp.page.link/store';
+  // String shortDynamicLink = 'https://pulabazaarapp.page.link/FGYB';
+
+  Uri _initialURI;
+  Uri _currentURI;
+  Object _err;
+
+  @override
+  void initState() {
+    // super.initState();
+  }
 
   @override
   void shareDynamicLinkProduct({itemUrl}) {
     DynamicLinkService().shareProductLink(
-      productUrl: itemUrl,
+      storeID: itemUrl,
     );
   }
 
-  DynamicLinkParameters dynamicLinkParameters({String url}) {
+  DynamicLinkParameters dynamicLinkParameters({String storeID, String title, String image}) {
     return DynamicLinkParameters(
       uriPrefix: shortDynamicLink,
-      link: Uri.parse(url),
+      link: Uri.parse('https://pulabazaar.com/store?id=$storeID'),
       androidParameters: AndroidParameters(
         packageName: "com.pula.bazaar",
         minimumVersion: 21,
@@ -163,149 +179,140 @@ class DynamicLinkService {
       //   minimumVersion: firebaseDynamicLinkConfig['iOSAppMinimumVersion'],
       //   appStoreId: firebaseDynamicLinkConfig['iOSAppStoreId'],
       // ),
+      socialMetaTagParameters: SocialMetaTagParameters(
+        title: title,
+        imageUrl: Uri.parse(image),
+      ),
     );
   }
 
   Future<Uri> generateFirebaseDynamicLink(DynamicLinkParameters params) async {
     var dynamicLinks = FirebaseDynamicLinks.instance;
 
-    if (shortDynamicLink==null) {
-      var shortDynamicLink = await dynamicLinks.buildShortLink(params);
-      return shortDynamicLink.shortUrl;
-    } else {
+    // if (shortDynamicLink==null) {
+    //   var shortDynamicLink = await dynamicLinks.buildShortLink(params);
+    //   return shortDynamicLink.shortUrl;
+    // } else {
       return await dynamicLinks.buildLink(params);
-    }
+    // }
   }
 
   /// share product link that contains Dynamic link
   void shareProductLink({
-    String productUrl,
+    String storeID,
+    String name,
+    String image,
   }) async {
-    var productParams = dynamicLinkParameters(url: productUrl);
+    var productParams = dynamicLinkParameters(storeID: storeID,image: image, title: name);
     var firebaseDynamicLink = await generateFirebaseDynamicLink(productParams);
     print('[firebase-dynamic-link] $firebaseDynamicLink');
     await Share.share(
+
       firebaseDynamicLink.toString(),
+      // name.toString(),
     );
   }
 
-   void initDynamicLinks() async {
 
+
+
+  static void initDynamicLinks() async {
+    Store _storeList;
+
+    FirebaseDynamicLinks.instance.onLink.listen((dynamicLinkData) {
+      // final Uri uri = dynamicLinkData.link;
+      // final queryParams = uri.pathSegments.contains('store');
+      // String productId = uri.queryParameters['id'];
+      // print(productId);
+      final deepLink = dynamicLinkData.link;
+      print("Dynamic URL: "+dynamicLinkData.link.queryParameters['store']);
+      handleDynamicLink(deepLink);
+    }).onError((e) {
+      print('[firebase-dynamic-link] error: ${e.message}');
+    });
 
     var initialLink = await FirebaseDynamicLinks.instance.getInitialLink();
-    SnackBar(content: Text("$initialLink"),);
-
     if (initialLink != null) {
       final deepLink = initialLink.link;
+      // final Uri uri = initialLink.link;
+      // final queryParams = uri.pathSegments.contains('store');
+      // String productId = uri.queryParameters['id'];
+      // print(productId);
       print('[firebase-dynamic-link] getInitialLink: $deepLink');
-      SnackBar(content: Text("$deepLink"),);
-      await handleDynamicLink(deepLink.toString(), );
+      // await handleDynamicLink(deepLink, );
+
+      String id = deepLink.queryParameters['id'];
+
+
+      // GetPage(name: '/store', page: () {
+      //   return getRoute(Get.arguments != null ? Get.arguments : StoreScreen(
+      //     store: Store(id: int.parse(Get.parameters[id])),
+      //     fromModule: Get.parameters['page'] == 'module',
+      //   ));
+      // });
+
+      // Get.to(
+      //     StoreScreen(store: Store(id: int.parse(Get.parameters[id])), fromModule: true)
+      // );
+      // Navigator.push(context, MaterialPageRoute(builder: (context)=> StoreScreen(store: Store(id: int.parse(Get.parameters[id])), fromModule: true)));
+      Get.to(
+        RouteHelper.getStoreRoute(int.parse(id), 'store'),
+        arguments: StoreScreen(store: _storeList, fromModule: true),
+      );
     }
-
-     FirebaseDynamicLinks.instance.onLink.listen((dynamicLinkData) {
-       handleDynamicLink(dynamicLinkData.link.path, );
-     }).onError((e) {
-       print('[firebase-dynamic-link] error: ${e.message}');
-     });
   }
-  //
-  //Navigate to ProductDetail screen by entering productURL
+
+  static getRoute(Widget navigateTo) {
+    int _minimumVersion = 0;
+    if(GetPlatform.isAndroid) {
+      _minimumVersion = Get.find<SplashController>().configModel.appMinimumVersionAndroid;
+    }else if(GetPlatform.isIOS) {
+      _minimumVersion = Get.find<SplashController>().configModel.appMinimumVersionIos;
+    }
+    return AppConstants.APP_VERSION < _minimumVersion ? UpdateScreen(isUpdate: true)
+        : Get.find<SplashController>().configModel.maintenanceMode ? UpdateScreen(isUpdate: false)
+        : Get.find<LocationController>().getUserAddress() == null
+        ? AccessLocationScreen(fromSignUp: false, fromHome: false, route: Get.currentRoute) : navigateTo;
+  }
+
   static Future<void> handleDynamicLink(
-      String url, ) async {
-    try {
-      // _showLoading(context);
+      Uri url,) async {
 
-      /// PRODUCT CASE
-      if (url.contains('/store/')
-          ) {
-        /// Note: the deepLink URL will look like: https://mstore.io/product/stitch-detail-tunic-dress/
-        // final product = await Services().api.getProductByPermalink(url);
-        final product = url;
-        print(product);
-        // if (product != null) {
-        //   await Get.toNamed(
-        //     RouteHelper.getStoreRoute(id, isFeatured ? 'module' : 'store'),
-        //     arguments: StoreScreen(store: _storeList[index], fromModule: isFeatured),
-        //   );
-        // }
+    Store _storeList;
 
-        /// PRODUCT CATEGORY CASE
+      // final queryParams = url.queryParameters['id'];
+
+      var isStore = url.pathSegments.contains('store');
+      if(url != null){
+        String id = url.queryParameters['id'];
+
+        if(url!=null){
+
+          try{
+
+            await Get.toNamed(
+                    RouteHelper.getStoreRoute(int.parse(id), 'store'),
+                    arguments: StoreScreen(store: _storeList, fromModule: true),
+                  );
+
+          }catch(e){
+            print(e);
+          }
+        }else{
+          return null;
+        }
       }
-        // else if (url.contains('/product-category/')) {
-      //   final category =
-      //   await Services().api.getProductCategoryByPermalink(url);
-      //   if (category != null) {
-      //     await FluxNavigate.pushNamed(
-      //       RouteList.backdrop,
-      //       arguments: BackDropArguments(
-      //         cateId: category.id,
-      //         cateName: category.name,
-      //       ),
-      //     );
-      //   }
+      // if (queryParams.isNotEmpty) {
+      //   final productId = url.queryParameters['id'];
       //
-      //   /// VENDOR CASE
-      // } else if (url.contains('/store/')) {
-      //   final vendor = await Services().api.getStoreByPermalink(url);
-      //   if (vendor != null) {
-      //     await FluxNavigate.pushNamed(
-      //       RouteList.storeDetail,
-      //       arguments: StoreDetailArgument(store: vendor),
-      //     );
-      //   }
-      // } else {
-      //   var blog = await Services().api.getBlogByPermalink(url);
-      //   if (blog != null) {
-      //     await FluxNavigate.pushNamed(
-      //       RouteList.detailBlog,
-      //       arguments: BlogDetailArguments(blog: blog),
+      //   print("Store ID" + productId);
+      //   if (productId != null) {
+      //     await Get.toNamed(
+      //       RouteHelper.getStoreRoute(int.parse(productId), 'store'),
+      //       arguments: StoreScreen(store: _storeList, fromModule: true),
       //     );
       //   }
       // }
-    } catch (err) {
-      // _showErrorMessage(context);
-    }
+
   }
-  //
-  // static void _showLoading(context) {
-  //   ScaffoldMessenger.of(context).showSnackBar(
-  //     SnackBar(
-  //       content: Text(S.current.loadingLink),
-  //       duration: const Duration(seconds: 3),
-  //       action: SnackBarAction(
-  //         label: 'DISMISS',
-  //         onPressed: () {
-  //           ScaffoldMessenger.of(context).hideCurrentSnackBar();
-  //         },
-  //       ),
-  //     ),
-  //   );
-  // }
-  //
-  // static void _showErrorMessage(context) {
-  //   ScaffoldMessenger.of(context).showSnackBar(
-  //     SnackBar(
-  //       content: Text(S.current.canNotLoadThisLink),
-  //       duration: const Duration(seconds: 2),
-  //       action: SnackBarAction(
-  //         label: 'DISMISS',
-  //         onPressed: () {
-  //           ScaffoldMessenger.of(context).hideCurrentSnackBar();
-  //         },
-  //       ),
-  //     ),
-  //   );
-  // }
-
-
-
-  // Future<String> generateProductCategoryUrl(dynamic productCategoryId) async {
-  //   final cate = await _service.api
-  //       .getProductCategoryById(categoryId: productCategoryId);
-  //   var url;
-  //   if (cate != null) {
-  //     url = serverConfig['url'] + '/product-category/' + cate.slug;
-  //   }
-  //   return url;
-  // }
 }

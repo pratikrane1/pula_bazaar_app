@@ -66,12 +66,13 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
             <!-- Deep linking -->
-            <intent-filter>
+            <meta-data android:name="flutter_deeplinking_enable" android:value="true"/>
+            <intent-filter android:autoVerify="true">
                 <action android:name="android.intent.action.VIEW"/>
                 <category android:name="android.intent.category.DEFAULT"/>
                 <category android:name="android.intent.category.BROWSABLE"/>
                 <data
-                    android:host="https://pulabazaarapp.page.link.com"
+                    android:host="pulabazaarapp.page.link"
                     android:scheme="https"/>
             </intent-filter>
         </activity>

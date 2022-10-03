@@ -1,4 +1,9 @@
+import 'dart:async';
+
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:sixam_mart/controller/auth_controller.dart';
 import 'package:sixam_mart/controller/banner_controller.dart';
 import 'package:sixam_mart/controller/campaign_controller.dart';
@@ -31,8 +36,12 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sixam_mart/view/screens/home/widget/module_view.dart';
 import 'package:sixam_mart/view/screens/parcel/parcel_category_screen.dart';
+import 'package:uni_links/uni_links.dart';
 
 import '../../../main.dart';
+
+
+bool _initialURILinkHandled = false;
 
 
 class HomeScreen extends StatefulWidget {
@@ -73,15 +82,93 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final ScrollController _scrollController = ScrollController();
+  Uri _initialURI;
+  Uri _currentURI;
+  Object _err;
+  StreamSubscription _streamSubscription;
+
 
   @override
   void initState() {
     super.initState();
-    DynamicLinkService().initDynamicLinks();
-
+    // DynamicLinkService.initDynamicLinks();
+    // _initURIHandler();
+    // _incomingLinkHandler();
     HomeScreen.loadData(false);
   }
 
+
+  // Future<void> _initURIHandler() async {
+  //   if (!_initialURILinkHandled) {
+  //     _initialURILinkHandled = true;
+  //     Fluttertoast.showToast(
+  //         msg: "Invoked _initURIHandler",
+  //         toastLength: Toast.LENGTH_SHORT,
+  //         gravity: ToastGravity.BOTTOM,
+  //         timeInSecForIosWeb: 1,
+  //         backgroundColor: Colors.green,
+  //         textColor: Colors.white
+  //     );
+  //     try {
+  //       final initialURI = await getInitialUri();
+  //       // Use the initialURI and warn the user if it is not correct,
+  //       // but keep in mind it could be `null`.
+  //       if (initialURI != null) {
+  //         debugPrint("Initial URI received $initialURI");
+  //         if (!mounted) {
+  //           return;
+  //         }
+  //         setState(() {
+  //           _initialURI = initialURI;
+  //         });
+  //       } else {
+  //         debugPrint("Null Initial URI received");
+  //       }
+  //     } on PlatformException {
+  //       // Platform messages may fail, so we use a try/catch PlatformException.
+  //       // Handle exception by warning the user their action did not succeed
+  //       debugPrint("Failed to receive initial uri");
+  //     } on FormatException catch (err) {
+  //       if (!mounted) {
+  //         return;
+  //       }
+  //       debugPrint('Malformed Initial URI received');
+  //       setState(() => _err = err);
+  //     }
+  //   }
+  // }
+  //
+  // /// Handle incoming links - the ones that the app will receive from the OS
+  // /// while already started.
+  // void _incomingLinkHandler() {
+  //   if (!kIsWeb) {
+  //     // It will handle app links while the app is already started - be it in
+  //     // the foreground or in the background.
+  //     _streamSubscription = uriLinkStream.listen((Uri uri) {
+  //       if (!mounted) {
+  //         return;
+  //       }
+  //       debugPrint('Received URI: ${uri.path} ${uri.queryParametersAll}');
+  //       setState(() {
+  //         _currentURI = uri;
+  //         _err = null;
+  //       });
+  //     }, onError: (Object err) {
+  //       if (!mounted) {
+  //         return;
+  //       }
+  //       debugPrint('Error occurred: $err');
+  //       setState(() {
+  //         _currentURI = null;
+  //         if (err is FormatException) {
+  //           _err = err;
+  //         } else {
+  //           _err = null;
+  //         }
+  //       });
+  //     });
+  //   }
+  // }
 
 
 

@@ -134,7 +134,10 @@ class StoreDescriptionView extends StatelessWidget {
               // onTap: () => shareReferralCode(),
               onTap: () {
                 DynamicLinkService().shareProductLink(
-                    productUrl: '${Get.find<SplashController>().configModel.baseUrls.storeImageUrl}/${store.name}/${store.id}');
+                    storeID: '${store.id}',
+                    name: store.name,
+                    image: '${Get.find<SplashController>().configModel.baseUrls.storeImageUrl}/${store.logo}');
+
               },
               child: ResponsiveHelper.isDesktop(context) ? Container(
                 padding: EdgeInsets.all(Dimensions.PADDING_SIZE_SMALL),
