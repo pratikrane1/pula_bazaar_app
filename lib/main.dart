@@ -1,11 +1,13 @@
 import 'dart:async';
 import 'dart:io';
+import 'package:flutter/foundation.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:sixam_mart/controller/auth_controller.dart';
 import 'package:sixam_mart/controller/cart_controller.dart';
 import 'package:sixam_mart/controller/localization_controller.dart';
 import 'package:sixam_mart/controller/location_controller.dart';
 import 'package:sixam_mart/controller/splash_controller.dart';
+import 'package:sixam_mart/controller/store_controller.dart';
 import 'package:sixam_mart/controller/theme_controller.dart';
 import 'package:sixam_mart/controller/wishlist_controller.dart';
 import 'package:sixam_mart/helper/notification_helper.dart';
@@ -25,6 +27,7 @@ import 'package:sixam_mart/view/screens/location/access_location_screen.dart';
 import 'package:sixam_mart/view/screens/store/store_screen.dart';
 import 'package:sixam_mart/view/screens/update/update_screen.dart';
 import 'package:url_strategy/url_strategy.dart';
+import 'controller/category_controller.dart';
 import 'data/model/response/store_model.dart';
 import 'helper/get_di.dart' as di;
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
@@ -51,7 +54,10 @@ Future<void> main() async {
   // await Firebase.initializeApp(options: DefaultFirebaseConfig.platformOptions);
 
   // Get any initial links
-  DynamicLinkService.initDynamicLinks();
+  if(!kIsWeb){
+    DynamicLinkService.initDynamicLinks();
+
+  }
   // final PendingDynamicLinkData initialLink =
   // await FirebaseDynamicLinks.instance.getInitialLink();
 
@@ -207,7 +213,6 @@ class DynamicLinkService {
     var firebaseDynamicLink = await generateFirebaseDynamicLink(productParams);
     print('[firebase-dynamic-link] $firebaseDynamicLink');
     await Share.share(
-
       firebaseDynamicLink.toString(),
       // name.toString(),
     );
@@ -220,13 +225,11 @@ class DynamicLinkService {
     Store _storeList;
 
     FirebaseDynamicLinks.instance.onLink.listen((dynamicLinkData) {
-      // final Uri uri = dynamicLinkData.link;
-      // final queryParams = uri.pathSegments.contains('store');
-      // String productId = uri.queryParameters['id'];
-      // print(productId);
       final deepLink = dynamicLinkData.link;
-      print("Dynamic URL: "+dynamicLinkData.link.queryParameters['store']);
-      handleDynamicLink(deepLink);
+      print('[firebase-dynamic-link] getInitialLink: $deepLink');
+
+      String id = deepLink.queryParameters['id'];
+      handleDynamicLink(deepLink.queryParameters['id']);
     }).onError((e) {
       print('[firebase-dynamic-link] error: ${e.message}');
     });
@@ -239,7 +242,7 @@ class DynamicLinkService {
       // String productId = uri.queryParameters['id'];
       // print(productId);
       print('[firebase-dynamic-link] getInitialLink: $deepLink');
-      // await handleDynamicLink(deepLink, );
+      await handleDynamicLink(deepLink.queryParameters['id'], );
 
       String id = deepLink.queryParameters['id'];
 
@@ -250,69 +253,34 @@ class DynamicLinkService {
       //     fromModule: Get.parameters['page'] == 'module',
       //   ));
       // });
-
-      // Get.to(
-      //     StoreScreen(store: Store(id: int.parse(Get.parameters[id])), fromModule: true)
-      // );
-      // Navigator.push(context, MaterialPageRoute(builder: (context)=> StoreScreen(store: Store(id: int.parse(Get.parameters[id])), fromModule: true)));
-      Get.to(
-        RouteHelper.getStoreRoute(int.parse(id), 'store'),
-        arguments: StoreScreen(store: _storeList, fromModule: true),
-      );
+      //
+      // if(Get.find<AuthController>().isLoggedIn()) {
+      //   Get.find<StoreController>().getStoreDetails(Store(id: int.parse(id)), true);
+      //   if(Get.find<CategoryController>().categoryList == null) {
+      //     Get.find<CategoryController>().getCategoryList(true);
+      //   }
+      //   Get.find<StoreController>().getStoreItemList(int.parse(id), 1, 'all', false);
+      //   Get.toNamed(
+      //     RouteHelper.getStoreRoute(int.parse(id), 'store'),
+      //     // arguments: StoreScreen(store: _storeList, fromModule: true),
+      //   );
+      // }
     }
-  }
-
-  static getRoute(Widget navigateTo) {
-    int _minimumVersion = 0;
-    if(GetPlatform.isAndroid) {
-      _minimumVersion = Get.find<SplashController>().configModel.appMinimumVersionAndroid;
-    }else if(GetPlatform.isIOS) {
-      _minimumVersion = Get.find<SplashController>().configModel.appMinimumVersionIos;
-    }
-    return AppConstants.APP_VERSION < _minimumVersion ? UpdateScreen(isUpdate: true)
-        : Get.find<SplashController>().configModel.maintenanceMode ? UpdateScreen(isUpdate: false)
-        : Get.find<LocationController>().getUserAddress() == null
-        ? AccessLocationScreen(fromSignUp: false, fromHome: false, route: Get.currentRoute) : navigateTo;
   }
 
   static Future<void> handleDynamicLink(
-      Uri url,) async {
+      String id,) async {
 
-    Store _storeList;
-
-      // final queryParams = url.queryParameters['id'];
-
-      var isStore = url.pathSegments.contains('store');
-      if(url != null){
-        String id = url.queryParameters['id'];
-
-        if(url!=null){
-
-          try{
-
-            await Get.toNamed(
-                    RouteHelper.getStoreRoute(int.parse(id), 'store'),
-                    arguments: StoreScreen(store: _storeList, fromModule: true),
-                  );
-
-          }catch(e){
-            print(e);
-          }
-        }else{
-          return null;
-        }
+    if(Get.find<AuthController>().isLoggedIn()) {
+      Get.find<StoreController>().getStoreDetails(Store(id: int.parse(id)), true);
+      if(Get.find<CategoryController>().categoryList == null) {
+        Get.find<CategoryController>().getCategoryList(true);
       }
-      // if (queryParams.isNotEmpty) {
-      //   final productId = url.queryParameters['id'];
-      //
-      //   print("Store ID" + productId);
-      //   if (productId != null) {
-      //     await Get.toNamed(
-      //       RouteHelper.getStoreRoute(int.parse(productId), 'store'),
-      //       arguments: StoreScreen(store: _storeList, fromModule: true),
-      //     );
-      //   }
-      // }
-
+      Get.find<StoreController>().getStoreItemList(int.parse(id), 1, 'all', false);
+      Get.toNamed(
+        RouteHelper.getStoreRoute(int.parse(id), 'store'),
+        // arguments: StoreScreen(store: _storeList, fromModule: true),
+      );
+    }
   }
 }

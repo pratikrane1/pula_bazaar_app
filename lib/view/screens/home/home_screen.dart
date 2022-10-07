@@ -36,12 +36,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sixam_mart/view/screens/home/widget/module_view.dart';
 import 'package:sixam_mart/view/screens/parcel/parcel_category_screen.dart';
-import 'package:uni_links/uni_links.dart';
 
-import '../../../main.dart';
-
-
-bool _initialURILinkHandled = false;
 
 
 class HomeScreen extends StatefulWidget {

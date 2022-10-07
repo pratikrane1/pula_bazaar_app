@@ -28,7 +28,8 @@ class ModuleView extends StatelessWidget {
         return BannerView(isFeatured: true);
       }),
 
-      splashController.moduleList != null ? splashController.moduleList.length > 0 ? GridView.builder(
+      splashController.moduleList != null ? splashController.moduleList.length > 0 ?
+      GridView.builder(
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 3, mainAxisSpacing: Dimensions.PADDING_SIZE_SMALL,
           crossAxisSpacing: Dimensions.PADDING_SIZE_SMALL, childAspectRatio: (1/1),
