@@ -142,7 +142,7 @@ class ItemTitleView extends StatelessWidget {
                 padding: EdgeInsets.fromLTRB(0, 5, 5, 5),
                 child: Text(
                   item.storeName,
-                  style: robotoRegular.copyWith(fontSize: Dimensions.fontSizeSmall),
+                  style: robotoRegular.copyWith(fontSize: Dimensions.fontSizeDefault),
                 ),
               ),
             ),
