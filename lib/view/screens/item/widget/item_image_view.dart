@@ -8,6 +8,8 @@ import 'package:sixam_mart/helper/route_helper.dart';
 import 'package:sixam_mart/util/dimensions.dart';
 import 'package:sixam_mart/view/base/custom_image.dart';
 
+import '../../../../main.dart';
+
 class ItemImageView extends StatelessWidget {
   final Item item;
   ItemImageView({@required this.item});
@@ -63,6 +65,25 @@ class ItemImageView extends StatelessWidget {
                     ),
                   ),
                 ),
+                Positioned(
+                  top: 5,
+                  right: 10,
+                  child: CircleAvatar(
+                      radius: 20,
+                      backgroundColor: Theme.of(context).disabledColor.withOpacity(0.5),
+                      child: IconButton(
+                        icon: Icon(Icons.share_outlined,
+                          color: Colors.black,
+                          size: 25,),
+                        onPressed: (){
+                              // DynamicLinkService().shareProductLink(
+                              //     storeID: '${store.id}',
+                              //     name: store.name,
+                              //     image: '${Get.find<SplashController>().configModel.baseUrls.storeImageUrl}/${store.logo}');
+                        },
+                      )
+                  ),
+                )
 
               ]),
             ),

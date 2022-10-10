@@ -74,6 +74,7 @@
                 <data
                     android:host="pulabazaarapp.page.link"
                     android:scheme="https"/>
+                <data android:scheme="http" />
             </intent-filter>
         </activity>
         <!-- Don't delete the meta-data below.

@@ -37,6 +37,8 @@ import 'package:get/get.dart';
 import 'package:sixam_mart/view/screens/home/widget/module_view.dart';
 import 'package:sixam_mart/view/screens/parcel/parcel_category_screen.dart';
 
+import '../../../main.dart';
+
 
 
 class HomeScreen extends StatefulWidget {
@@ -86,9 +88,11 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    // DynamicLinkService.initDynamicLinks();
-    // _initURIHandler();
-    // _incomingLinkHandler();
+    if(!kIsWeb){
+      DynamicLinkService.initDynamicLinks();
+
+    }
+
     HomeScreen.loadData(false);
   }
 

@@ -135,6 +135,7 @@ class StoreDescriptionView extends StatelessWidget {
               onTap: () {
                 DynamicLinkService().shareProductLink(
                     storeID: '${store.id}',
+                    moduleId: '${store.moduleId}',
                     name: store.name,
                     image: '${Get.find<SplashController>().configModel.baseUrls.storeImageUrl}/${store.logo}');
 

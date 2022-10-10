@@ -28,6 +28,7 @@ import 'package:sixam_mart/view/screens/store/store_screen.dart';
 import 'package:sixam_mart/view/screens/update/update_screen.dart';
 import 'package:url_strategy/url_strategy.dart';
 import 'controller/category_controller.dart';
+import 'data/model/response/module_model.dart';
 import 'data/model/response/store_model.dart';
 import 'helper/get_di.dart' as di;
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
@@ -54,10 +55,7 @@ Future<void> main() async {
   // await Firebase.initializeApp(options: DefaultFirebaseConfig.platformOptions);
 
   // Get any initial links
-  if(!kIsWeb){
-    DynamicLinkService.initDynamicLinks();
 
-  }
   // final PendingDynamicLinkData initialLink =
   // await FirebaseDynamicLinks.instance.getInitialLink();
 
@@ -172,13 +170,12 @@ class DynamicLinkService {
     );
   }
 
-  DynamicLinkParameters dynamicLinkParameters({String storeID, String title, String image}) {
+  DynamicLinkParameters dynamicLinkParameters({String storeID, String title, String image, String moduleId}) {
     return DynamicLinkParameters(
       uriPrefix: shortDynamicLink,
-      link: Uri.parse('https://pulabazaar.com/store?id=$storeID'),
+      link: Uri.parse('https://tech.pulabazaar.in/store?id=$storeID&moduleId=$moduleId'),
       androidParameters: AndroidParameters(
         packageName: "com.pula.bazaar",
-        minimumVersion: 21,
       ),
       // iosParameters: IOSParameters(
       //   bundleId: firebaseDynamicLinkConfig['iOSBundleId'],
@@ -195,21 +192,22 @@ class DynamicLinkService {
   Future<Uri> generateFirebaseDynamicLink(DynamicLinkParameters params) async {
     var dynamicLinks = FirebaseDynamicLinks.instance;
 
-    // if (shortDynamicLink==null) {
-    //   var shortDynamicLink = await dynamicLinks.buildShortLink(params);
-    //   return shortDynamicLink.shortUrl;
-    // } else {
+    if (dynamicLinks!=null) {
+      var shortDynamicLink = await dynamicLinks.buildShortLink(params);
+      return shortDynamicLink.shortUrl;
+    } else {
       return await dynamicLinks.buildLink(params);
-    // }
+    }
   }
 
   /// share product link that contains Dynamic link
   void shareProductLink({
+    String moduleId,
     String storeID,
     String name,
     String image,
   }) async {
-    var productParams = dynamicLinkParameters(storeID: storeID,image: image, title: name);
+    var productParams = dynamicLinkParameters(storeID: storeID,image: image, title: name, moduleId: moduleId);
     var firebaseDynamicLink = await generateFirebaseDynamicLink(productParams);
     print('[firebase-dynamic-link] $firebaseDynamicLink');
     await Share.share(
@@ -229,7 +227,7 @@ class DynamicLinkService {
       print('[firebase-dynamic-link] getInitialLink: $deepLink');
 
       String id = deepLink.queryParameters['id'];
-      handleDynamicLink(deepLink.queryParameters['id']);
+      // handleDynamicLink(deepLink.queryParameters['id']);
     }).onError((e) {
       print('[firebase-dynamic-link] error: ${e.message}');
     });
@@ -242,9 +240,13 @@ class DynamicLinkService {
       // String productId = uri.queryParameters['id'];
       // print(productId);
       print('[firebase-dynamic-link] getInitialLink: $deepLink');
-      await handleDynamicLink(deepLink.queryParameters['id'], );
 
       String id = deepLink.queryParameters['id'];
+      String moduleId = deepLink.queryParameters['moduleId'];
+      print(moduleId);
+
+      await handleDynamicLink(id, moduleId);
+
 
 
       // GetPage(name: '/store', page: () {
@@ -269,7 +271,10 @@ class DynamicLinkService {
   }
 
   static Future<void> handleDynamicLink(
-      String id,) async {
+      String id,String moduleId) async {
+
+    String isFeature ='store';
+
 
     if(Get.find<AuthController>().isLoggedIn()) {
       Get.find<StoreController>().getStoreDetails(Store(id: int.parse(id)), true);
@@ -277,9 +282,20 @@ class DynamicLinkService {
         Get.find<CategoryController>().getCategoryList(true);
       }
       Get.find<StoreController>().getStoreItemList(int.parse(id), 1, 'all', false);
+      List<Store> _storeList = isFeature != null ? StoreController().featuredStoreList
+          : StoreController().latestStoreList;
+
+      if( Get.find<SplashController>().moduleList != null) {
+        for(ModuleModel module in Get.find<SplashController>().moduleList) {
+          if(module.id == moduleId) {
+            Get.find<SplashController>().setModule(module);
+            break;
+          }
+        }
+      }
       Get.toNamed(
         RouteHelper.getStoreRoute(int.parse(id), 'store'),
-        // arguments: StoreScreen(store: _storeList, fromModule: true),
+
       );
     }
   }

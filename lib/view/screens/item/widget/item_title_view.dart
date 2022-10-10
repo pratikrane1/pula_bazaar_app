@@ -123,6 +123,24 @@ class ItemTitleView extends StatelessWidget {
                             color: wishController.wishItemIdList.contains(item.id) ? Theme.of(context).primaryColor : Theme.of(context).disabledColor,
                           ),
                         ),
+
+                        // SizedBox(width: 5,),
+
+                        // InkWell(
+                        //   // onTap: () => shareReferralCode(),
+                        //   onTap: () {
+                        //     // DynamicLinkService().shareProductLink(
+                        //     //     storeID: '${store.id}',
+                        //     //     name: store.name,
+                        //     //     image: '${Get.find<SplashController>().configModel.baseUrls.storeImageUrl}/${store.logo}');
+                        //
+                        //   },
+                        //   child: ResponsiveHelper.isDesktop(context) ? Container(
+                        //     padding: EdgeInsets.all(Dimensions.PADDING_SIZE_SMALL),
+                        //     decoration: BoxDecoration(borderRadius: BorderRadius.circular(Dimensions.RADIUS_DEFAULT), color: Theme.of(context).primaryColor),
+                        //     child: Center(child: Icon(Icons.share_outlined, color: Colors.white)),
+                        //   ) : Icon(Icons.share_outlined, color: Theme.of(context).disabledColor),
+                        // ),
                       ],
                     );
                   }
@@ -173,6 +191,39 @@ class ItemTitleView extends StatelessWidget {
               RatingBar(rating: item.avgRating, ratingCount: item.ratingCount),
 
             ]),
+
+            Row(
+              children: [
+                Padding(
+                  padding: EdgeInsets.fromLTRB(0, 5, 5, 5),
+                  child: Text(
+                    'Weight:',
+                    style: robotoRegular.copyWith(fontSize: Dimensions.fontSizeDefault),
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.fromLTRB(0, 5, 5, 5),
+                  child: Text(
+                      "0.0",
+                    style: robotoRegular.copyWith(fontSize: Dimensions.fontSizeDefault),
+                  ),
+                ),
+              ],
+            ),
+
+            Row(
+              children: [
+                Padding(
+                  padding: EdgeInsets.fromLTRB(0, 5, 5, 5),
+                  child: Text(
+                    'Contact:',
+                    style: robotoRegular.copyWith(fontSize: Dimensions.fontSizeDefault),
+                  ),
+                ),
+                Icon(Icons.whatsapp, color: Theme.of(context).primaryColor, size: 20),
+              ],
+            ),
+
 
           ]);
         },
