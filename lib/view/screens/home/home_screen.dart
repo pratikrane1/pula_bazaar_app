@@ -97,77 +97,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
 
-  // Future<void> _initURIHandler() async {
-  //   if (!_initialURILinkHandled) {
-  //     _initialURILinkHandled = true;
-  //     Fluttertoast.showToast(
-  //         msg: "Invoked _initURIHandler",
-  //         toastLength: Toast.LENGTH_SHORT,
-  //         gravity: ToastGravity.BOTTOM,
-  //         timeInSecForIosWeb: 1,
-  //         backgroundColor: Colors.green,
-  //         textColor: Colors.white
-  //     );
-  //     try {
-  //       final initialURI = await getInitialUri();
-  //       // Use the initialURI and warn the user if it is not correct,
-  //       // but keep in mind it could be `null`.
-  //       if (initialURI != null) {
-  //         debugPrint("Initial URI received $initialURI");
-  //         if (!mounted) {
-  //           return;
-  //         }
-  //         setState(() {
-  //           _initialURI = initialURI;
-  //         });
-  //       } else {
-  //         debugPrint("Null Initial URI received");
-  //       }
-  //     } on PlatformException {
-  //       // Platform messages may fail, so we use a try/catch PlatformException.
-  //       // Handle exception by warning the user their action did not succeed
-  //       debugPrint("Failed to receive initial uri");
-  //     } on FormatException catch (err) {
-  //       if (!mounted) {
-  //         return;
-  //       }
-  //       debugPrint('Malformed Initial URI received');
-  //       setState(() => _err = err);
-  //     }
-  //   }
-  // }
-  //
-  // /// Handle incoming links - the ones that the app will receive from the OS
-  // /// while already started.
-  // void _incomingLinkHandler() {
-  //   if (!kIsWeb) {
-  //     // It will handle app links while the app is already started - be it in
-  //     // the foreground or in the background.
-  //     _streamSubscription = uriLinkStream.listen((Uri uri) {
-  //       if (!mounted) {
-  //         return;
-  //       }
-  //       debugPrint('Received URI: ${uri.path} ${uri.queryParametersAll}');
-  //       setState(() {
-  //         _currentURI = uri;
-  //         _err = null;
-  //       });
-  //     }, onError: (Object err) {
-  //       if (!mounted) {
-  //         return;
-  //       }
-  //       debugPrint('Error occurred: $err');
-  //       setState(() {
-  //         _currentURI = null;
-  //         if (err is FormatException) {
-  //           _err = err;
-  //         } else {
-  //           _err = null;
-  //         }
-  //       });
-  //     });
-  //   }
-  // }
+
 
 
 
@@ -214,11 +144,15 @@ class _HomeScreenState extends State<HomeScreen> {
                 await Get.find<StoreController>().getFeaturedStoreList();
               }
             },
-            child: ResponsiveHelper.isDesktop(context) ? WebHomeScreen(
+            child: ResponsiveHelper.isDesktop(context) ?
+            WebHomeScreen(
               scrollController: _scrollController,
-            ) : (Get.find<SplashController>().module != null && Get.find<SplashController>().module.themeId == 2) ? Theme1HomeScreen(
+            ) :
+            (Get.find<SplashController>().module != null && Get.find<SplashController>().module.themeId == 2) ?
+            Theme1HomeScreen(
               scrollController: _scrollController, splashController: splashController, showMobileModule: _showMobileModule,
-            ) : CustomScrollView(
+            ) :
+            CustomScrollView(
               controller: _scrollController,
               physics: AlwaysScrollableScrollPhysics(),
               slivers: [
@@ -326,7 +260,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 SliverToBoxAdapter(
                   child: Center(child: SizedBox(
                     width: Dimensions.WEB_MAX_WIDTH,
-                    child: !_showMobileModule ? Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                    child: !_showMobileModule ?
+                    Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
 
                       BannerView(isFeatured: false),
                       CategoryView(),
