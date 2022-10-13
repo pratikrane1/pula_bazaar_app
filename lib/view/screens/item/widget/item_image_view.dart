@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:sixam_mart/controller/item_controller.dart';
 import 'package:sixam_mart/controller/splash_controller.dart';
 import 'package:sixam_mart/data/model/response/item_model.dart';
@@ -74,8 +75,12 @@ class ItemImageView extends StatelessWidget {
                       child: IconButton(
                         icon: Icon(Icons.share_outlined,
                           color: Colors.black,
-                          size: 25,),
+                          size: 24,),
                         onPressed: (){
+                           Share.share(
+                              'In Testing',
+                              subject: 'Item URL'
+                          );
                               // DynamicLinkService().shareProductLink(
                               //     storeID: '${store.id}',
                               //     name: store.name,

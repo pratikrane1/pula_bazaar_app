@@ -1,3 +1,4 @@
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:sixam_mart/controller/auth_controller.dart';
 import 'package:sixam_mart/controller/store_controller.dart';
@@ -230,13 +231,14 @@ class StoreDescriptionView extends StatelessWidget {
         ),
         Expanded(child: SizedBox()),
         InkWell(
-          onTap: () => _launchWhatsapp(context, store),
-          //     Get.toNamed(RouteHelper.getMapRoute(
-          //   AddressModel(
-          //     id: store.id, address: store.address, latitude: store.latitude,
-          //     longitude: store.longitude, contactPersonNumber: '', contactPersonName: '', addressType: '',
-          //   ), 'store',
-          // )),
+          // onTap: () => _launchWhatsapp(context, store),
+          onTap: () {
+            if(store.phone != null){
+              _launchWhatsapp(context, store);
+            }else{
+              Fluttertoast.showToast(msg: "Phone Number not available");
+            }
+          },
           child: Column(children: [
             Icon(Icons.whatsapp, color: Theme.of(context).primaryColor, size: 20),
             SizedBox(width: Dimensions.PADDING_SIZE_EXTRA_SMALL),

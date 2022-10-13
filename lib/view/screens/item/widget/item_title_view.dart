@@ -192,37 +192,7 @@ class ItemTitleView extends StatelessWidget {
 
             ]),
 
-            Row(
-              children: [
-                Padding(
-                  padding: EdgeInsets.fromLTRB(0, 5, 5, 5),
-                  child: Text(
-                    'Weight:',
-                    style: robotoRegular.copyWith(fontSize: Dimensions.fontSizeDefault),
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.fromLTRB(0, 5, 5, 5),
-                  child: Text(
-                      "0.0",
-                    style: robotoRegular.copyWith(fontSize: Dimensions.fontSizeDefault),
-                  ),
-                ),
-              ],
-            ),
 
-            Row(
-              children: [
-                Padding(
-                  padding: EdgeInsets.fromLTRB(0, 5, 5, 5),
-                  child: Text(
-                    'Contact:',
-                    style: robotoRegular.copyWith(fontSize: Dimensions.fontSizeDefault),
-                  ),
-                ),
-                Icon(Icons.whatsapp, color: Theme.of(context).primaryColor, size: 20),
-              ],
-            ),
 
 
           ]);

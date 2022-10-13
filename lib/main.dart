@@ -23,16 +23,12 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
-import 'package:sixam_mart/view/screens/location/access_location_screen.dart';
-import 'package:sixam_mart/view/screens/store/store_screen.dart';
-import 'package:sixam_mart/view/screens/update/update_screen.dart';
 import 'package:url_strategy/url_strategy.dart';
 import 'controller/category_controller.dart';
 import 'data/model/response/module_model.dart';
 import 'data/model/response/store_model.dart';
 import 'helper/get_di.dart' as di;
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
-import 'package:uni_links/uni_links.dart';
 
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
 
@@ -148,15 +144,9 @@ class MyHttpOverrides extends HttpOverrides {
 }
 
 class DynamicLinkService {
-  // final _service = Services();
 
   String shortDynamicLink = 'https://pulabazaarapp.page.link';
-  // String shortDynamicLink = 'https://pulabazaarapp.page.link/store';
-  // String shortDynamicLink = 'https://pulabazaarapp.page.link/FGYB';
 
-  Uri _initialURI;
-  Uri _currentURI;
-  Object _err;
 
   @override
   void initState() {
@@ -212,7 +202,6 @@ class DynamicLinkService {
     print('[firebase-dynamic-link] $firebaseDynamicLink');
     await Share.share(
       firebaseDynamicLink.toString(),
-      // name.toString(),
     );
   }
 
@@ -222,12 +211,15 @@ class DynamicLinkService {
   static void initDynamicLinks() async {
     Store _storeList;
 
-    FirebaseDynamicLinks.instance.onLink.listen((dynamicLinkData) {
+    FirebaseDynamicLinks.instance.onLink.listen((dynamicLinkData) async {
       final deepLink = dynamicLinkData.link;
       print('[firebase-dynamic-link] getInitialLink: $deepLink');
 
       String id = deepLink.queryParameters['id'];
-      // handleDynamicLink(deepLink.queryParameters['id']);
+      String moduleId = deepLink.queryParameters['moduleId'];
+      print(moduleId);
+
+      await handleDynamicLink(id, moduleId);
     }).onError((e) {
       print('[firebase-dynamic-link] error: ${e.message}');
     });
@@ -282,8 +274,8 @@ class DynamicLinkService {
         Get.find<CategoryController>().getCategoryList(true);
       }
       Get.find<StoreController>().getStoreItemList(int.parse(id), 1, 'all', false);
-      List<Store> _storeList = isFeature != null ? StoreController().featuredStoreList
-          : StoreController().latestStoreList;
+      // List<Store> _storeList = isFeature != null ? StoreController().featuredStoreList
+      //     : StoreController().latestStoreList;
 
       if( Get.find<SplashController>().moduleList != null) {
         for(ModuleModel module in Get.find<SplashController>().moduleList) {
@@ -295,7 +287,6 @@ class DynamicLinkService {
       }
       Get.toNamed(
         RouteHelper.getStoreRoute(int.parse(id), 'store'),
-
       );
     }
   }
