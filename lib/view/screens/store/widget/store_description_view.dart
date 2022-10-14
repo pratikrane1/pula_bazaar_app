@@ -135,7 +135,7 @@ class StoreDescriptionView extends StatelessWidget {
               // onTap: () => shareReferralCode(),
               onTap: () {
                 DynamicLinkService().shareProductLink(
-                    storeID: '${store.id}',
+                    url: Uri.parse('https://tech.pulabazaar.in/store?id=${store.id}&moduleId=${store.moduleId}'),
                     moduleId: '${store.moduleId}',
                     name: store.name,
                     image: '${Get.find<SplashController>().configModel.baseUrls.storeImageUrl}/${store.logo}');

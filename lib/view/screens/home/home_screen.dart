@@ -92,6 +92,17 @@ class _HomeScreenState extends State<HomeScreen> {
       DynamicLinkService.initDynamicLinks();
 
     }
+    FirebaseDynamicLinks.instance.onLink.listen((dynamicLinkData)  {
+      Uri deepLink = dynamicLinkData.link;
+      print('[firebase-dynamic-link] getInitialLink: $deepLink');
+
+      String id = deepLink.queryParameters['id'];
+      String moduleId = deepLink.queryParameters['moduleId'];
+      print(moduleId);
+      DynamicLinkService.handleDynamicLink(id,moduleId,dynamicLinkData.link.path);
+    }).onError((e) {
+      print('[firebase-dynamic-link] error: ${e.message}');
+    });
 
     HomeScreen.loadData(false);
   }

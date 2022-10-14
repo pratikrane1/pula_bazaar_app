@@ -104,7 +104,8 @@ class _SignInScreenState extends State<SignInScreen> {
                   ) : null,
                   child: GetBuilder<AuthController>(builder: (authController) {
 
-                    return Column(children: [
+                    return Column(
+                        children: [
 
                       Image.asset(Images.logo, width: 200),
                       // SizedBox(height: Dimensions.PADDING_SIZE_SMALL),

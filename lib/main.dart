@@ -23,8 +23,10 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
+import 'package:sixam_mart/view/screens/item/item_details_screen.dart';
 import 'package:url_strategy/url_strategy.dart';
 import 'controller/category_controller.dart';
+import 'controller/item_controller.dart';
 import 'data/model/response/module_model.dart';
 import 'data/model/response/store_model.dart';
 import 'helper/get_di.dart' as di;
@@ -47,6 +49,7 @@ Future<void> main() async {
     ));
   }
   await Firebase.initializeApp();
+  WidgetsFlutterBinding.ensureInitialized();
 
   // await Firebase.initializeApp(options: DefaultFirebaseConfig.platformOptions);
 
@@ -145,6 +148,7 @@ class MyHttpOverrides extends HttpOverrides {
 
 class DynamicLinkService {
 
+  // String shortDynamicLink = 'https://pulabazaarapp.page.link';
   String shortDynamicLink = 'https://pulabazaarapp.page.link';
 
 
@@ -156,16 +160,17 @@ class DynamicLinkService {
   @override
   void shareDynamicLinkProduct({itemUrl}) {
     DynamicLinkService().shareProductLink(
-      storeID: itemUrl,
+      url: itemUrl,
     );
   }
 
-  DynamicLinkParameters dynamicLinkParameters({String storeID, String title, String image, String moduleId}) {
+  DynamicLinkParameters dynamicLinkParameters({Uri url, String title, String image, String moduleId}) {
     return DynamicLinkParameters(
       uriPrefix: shortDynamicLink,
-      link: Uri.parse('https://tech.pulabazaar.in/store?id=$storeID&moduleId=$moduleId'),
+      link: url,
       androidParameters: AndroidParameters(
         packageName: "com.pula.bazaar",
+        minimumVersion: 0,
       ),
       // iosParameters: IOSParameters(
       //   bundleId: firebaseDynamicLinkConfig['iOSBundleId'],
@@ -193,11 +198,11 @@ class DynamicLinkService {
   /// share product link that contains Dynamic link
   void shareProductLink({
     String moduleId,
-    String storeID,
+    Uri url,
     String name,
     String image,
   }) async {
-    var productParams = dynamicLinkParameters(storeID: storeID,image: image, title: name, moduleId: moduleId);
+    var productParams = dynamicLinkParameters(url: url,image: image, title: name, moduleId: moduleId);
     var firebaseDynamicLink = await generateFirebaseDynamicLink(productParams);
     print('[firebase-dynamic-link] $firebaseDynamicLink');
     await Share.share(
@@ -209,35 +214,29 @@ class DynamicLinkService {
 
 
   static void initDynamicLinks() async {
-    Store _storeList;
-
-    FirebaseDynamicLinks.instance.onLink.listen((dynamicLinkData) async {
-      final deepLink = dynamicLinkData.link;
+    FirebaseDynamicLinks.instance.onLink.listen((dynamicLinkData)  {
+      Uri deepLink = dynamicLinkData.link;
       print('[firebase-dynamic-link] getInitialLink: $deepLink');
 
       String id = deepLink.queryParameters['id'];
       String moduleId = deepLink.queryParameters['moduleId'];
       print(moduleId);
-
-      await handleDynamicLink(id, moduleId);
+      handleDynamicLink(id,moduleId,dynamicLinkData.link.path);
     }).onError((e) {
       print('[firebase-dynamic-link] error: ${e.message}');
     });
 
-    var initialLink = await FirebaseDynamicLinks.instance.getInitialLink();
+    final PendingDynamicLinkData initialLink = await FirebaseDynamicLinks.instance.getInitialLink();
     if (initialLink != null) {
-      final deepLink = initialLink.link;
-      // final Uri uri = initialLink.link;
-      // final queryParams = uri.pathSegments.contains('store');
-      // String productId = uri.queryParameters['id'];
-      // print(productId);
+      Uri deepLink = initialLink.link;
+
       print('[firebase-dynamic-link] getInitialLink: $deepLink');
 
       String id = deepLink.queryParameters['id'];
       String moduleId = deepLink.queryParameters['moduleId'];
       print(moduleId);
 
-      await handleDynamicLink(id, moduleId);
+      await handleDynamicLink(id,moduleId, deepLink.path);
 
 
 
@@ -263,31 +262,59 @@ class DynamicLinkService {
   }
 
   static Future<void> handleDynamicLink(
-      String id,String moduleId) async {
+      String id,String moduleId, final url) async {
 
-    String isFeature ='store';
+    bool item = url.contains('/item');
+    print(item);
 
+    if(url.contains('/store')){
+      if(Get.find<AuthController>().isLoggedIn()) {
+        Get.find<StoreController>().getStoreDetails(Store(id: int.parse(id)), true);
+        if(Get.find<CategoryController>().categoryList == null) {
+          Get.find<CategoryController>().getCategoryList(true);
+        }
+        Get.find<StoreController>().getStoreItemList(int.parse(id), 1, 'all', false);
+        // List<Store> _storeList = isFeature != null ? StoreController().featuredStoreList
+        //     : StoreController().latestStoreList;
 
-    if(Get.find<AuthController>().isLoggedIn()) {
-      Get.find<StoreController>().getStoreDetails(Store(id: int.parse(id)), true);
-      if(Get.find<CategoryController>().categoryList == null) {
-        Get.find<CategoryController>().getCategoryList(true);
-      }
-      Get.find<StoreController>().getStoreItemList(int.parse(id), 1, 'all', false);
-      // List<Store> _storeList = isFeature != null ? StoreController().featuredStoreList
-      //     : StoreController().latestStoreList;
-
-      if( Get.find<SplashController>().moduleList != null) {
-        for(ModuleModel module in Get.find<SplashController>().moduleList) {
-          if(module.id == moduleId) {
-            Get.find<SplashController>().setModule(module);
-            break;
+        if( Get.find<SplashController>().moduleList != null) {
+          for(ModuleModel module in Get.find<SplashController>().moduleList) {
+            if(module.id == moduleId) {
+              Get.find<SplashController>().setModule(module);
+              break;
+            }
           }
         }
+        Get.toNamed(
+          RouteHelper.getStoreRoute(int.parse(id), 'store'),
+        );
       }
-      Get.toNamed(
-        RouteHelper.getStoreRoute(int.parse(id), 'store'),
-      );
+    }else if(url.contains('/item')){
+      if(Get.find<AuthController>().isLoggedIn()) {
+        Get.find<StoreController>().getStoreDetails(Store(id: int.parse(id)), true);
+        if(Get.find<CategoryController>().categoryList == null) {
+          Get.find<CategoryController>().getCategoryList(true);
+        }
+        Get.find<StoreController>().getStoreItemList(int.parse(id), 1, 'all', false);
+        await Get.find<ItemController>().getPopularItemList(true, 'all', false);
+
+        // List<Store> _storeList = isFeature != null ? StoreController().featuredStoreList
+        //     : StoreController().latestStoreList;
+
+        if( Get.find<SplashController>().moduleList != null) {
+          for(ModuleModel module in Get.find<SplashController>().moduleList) {
+            if(module.id == moduleId) {
+              Get.find<SplashController>().setModule(module);
+              break;
+            }
+          }
+        }
+        Get.toNamed(
+          RouteHelper.getItemDetailsRoute(int.parse(id), item),
+        );
+      }
     }
+
+
   }
 }
