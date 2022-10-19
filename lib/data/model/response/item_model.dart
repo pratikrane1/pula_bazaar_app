@@ -61,6 +61,7 @@ class Item {
   String weight;
   String storePhone;
   String privacyPolicy;
+  String itemUrl;
 
   Item(
       {this.id,
@@ -92,6 +93,7 @@ class Item {
         this.weight,
         this.storePhone,
         this.privacyPolicy,
+        this.itemUrl,
       });
 
   Item.fromJson(Map<String, dynamic> json) {
@@ -145,6 +147,7 @@ class Item {
     weight = json['weight'];
     storePhone = json['phone'];
     privacyPolicy = json['privacy_policy'];
+    itemUrl = json['item_url'];
   }
 
   Map<String, dynamic> toJson() {
@@ -188,6 +191,7 @@ class Item {
     data['weight'] = this.weight;
     data['phone'] = this.storePhone;
     data['privacy_policy'] = this.privacyPolicy;
+    data['item_url'] = this.itemUrl;
     return data;
   }
 }

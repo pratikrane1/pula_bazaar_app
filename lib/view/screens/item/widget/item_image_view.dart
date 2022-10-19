@@ -79,6 +79,7 @@ class ItemImageView extends StatelessWidget {
                         onPressed: (){
                           DynamicLinkService().shareProductLink(
                               url: Uri.parse('https://tech.pulabazaar.in/item?id=${item.id}&moduleId=${item.moduleId}'),
+                              // url: Uri.parse(item.itemUrl+'&moduleId=${item.moduleId}'),
                               moduleId: '${item.moduleId}',
                               name: item.name,
                               image: '${Get.find<SplashController>().

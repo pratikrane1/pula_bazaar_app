@@ -1,4 +1,5 @@
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sixam_mart/controller/cart_controller.dart';
@@ -50,6 +51,7 @@ class _ItemDetailsScreenState extends State<ItemDetailsScreen> {
 
     var whatsappURl_android = "whatsapp://send?phone=" + whatsapp +
         "&text=$message";
+    var whatsappURL_WEB = "https://wa.me/$whatsapp/?text=${Uri.parse(message)}";
     var whatappURL_ios = "https://wa.me/$whatsapp?text=${Uri.parse(message)}";
     if (Platform.isIOS) {
       // for iOS phone only
@@ -63,6 +65,14 @@ class _ItemDetailsScreenState extends State<ItemDetailsScreen> {
       // android , web
       if (await canLaunch(whatsappURl_android)) {
         await launch(whatsappURl_android);
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: new Text("whatsapp no installed")));
+      }
+    }
+    if(kIsWeb){
+      if (await canLaunch(whatsappURL_WEB)) {
+        await launch(whatsappURL_WEB);
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: new Text("whatsapp no installed")));

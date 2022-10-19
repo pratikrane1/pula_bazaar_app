@@ -102,35 +102,35 @@ class _WebMenuBarState extends State<WebMenuBar> {
         SizedBox(width: 20),
         MenuIconButton(icon: Icons.shopping_cart, isCart: true, onTap: () => Get.toNamed(RouteHelper.getCartRoute())),
         SizedBox(width: 20),
-        GetBuilder<LocalizationController>(builder: (localizationController) {
-          int _index = 0;
-          List<DropdownMenuItem<int>> _languageList = [];
-          for(int index=0; index<AppConstants.languages.length; index++) {
-            _languageList.add(DropdownMenuItem(
-              child: TextHover(builder: (hovered) {
-                return Row(children: [
-                  Image.asset(AppConstants.languages[index].imageUrl, height: 20, width: 20),
-                  SizedBox(width: Dimensions.PADDING_SIZE_EXTRA_SMALL),
-                  Text(AppConstants.languages[index].languageName, style: robotoRegular.copyWith(color: hovered ? Theme.of(context).primaryColor : null)),
-                ]);
-              }),
-              value: index,
-            ));
-            if(AppConstants.languages[index].languageCode == localizationController.locale.languageCode) {
-              _index = index;
-            }
-          }
-          return DropdownButton<int>(
-            value: _index,
-            items: _languageList,
-            dropdownColor: Theme.of(context).cardColor,
-            icon: Icon(Icons.keyboard_arrow_down),
-            elevation: 0, iconSize: 30, underline: SizedBox(),
-            onChanged: (int index) {
-              localizationController.setLanguage(Locale(AppConstants.languages[index].languageCode, AppConstants.languages[index].countryCode));
-            },
-          );
-        }),
+        // GetBuilder<LocalizationController>(builder: (localizationController) {
+        //   int _index = 0;
+        //   List<DropdownMenuItem<int>> _languageList = [];
+        //   for(int index=0; index<AppConstants.languages.length; index++) {
+        //     _languageList.add(DropdownMenuItem(
+        //       child: TextHover(builder: (hovered) {
+        //         return Row(children: [
+        //           Image.asset(AppConstants.languages[index].imageUrl, height: 20, width: 20),
+        //           SizedBox(width: Dimensions.PADDING_SIZE_EXTRA_SMALL),
+        //           Text(AppConstants.languages[index].languageName, style: robotoRegular.copyWith(color: hovered ? Theme.of(context).primaryColor : null)),
+        //         ]);
+        //       }),
+        //       value: index,
+        //     ));
+        //     if(AppConstants.languages[index].languageCode == localizationController.locale.languageCode) {
+        //       _index = index;
+        //     }
+        //   }
+        //   return DropdownButton<int>(
+        //     value: _index,
+        //     items: _languageList,
+        //     dropdownColor: Theme.of(context).cardColor,
+        //     icon: Icon(Icons.keyboard_arrow_down),
+        //     elevation: 0, iconSize: 30, underline: SizedBox(),
+        //     onChanged: (int index) {
+        //       localizationController.setLanguage(Locale(AppConstants.languages[index].languageCode, AppConstants.languages[index].countryCode));
+        //     },
+        //   );
+        // }),
         SizedBox(width: 20),
         MenuIconButton(icon: Icons.menu, onTap: () {
           Scaffold.of(context).openEndDrawer();
