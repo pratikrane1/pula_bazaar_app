@@ -175,7 +175,6 @@ class DynamicLinkService {
       // iosParameters: IOSParameters(
       //   bundleId: firebaseDynamicLinkConfig['iOSBundleId'],
       //   minimumVersion: firebaseDynamicLinkConfig['iOSAppMinimumVersion'],
-      //   appStoreId: firebaseDynamicLinkConfig['iOSAppStoreId'],
       // ),
       socialMetaTagParameters: SocialMetaTagParameters(
         title: title,
@@ -197,6 +196,7 @@ class DynamicLinkService {
 
   /// share product link that contains Dynamic link
   void shareProductLink({
+    String des,
     String moduleId,
     Uri url,
     String name,
@@ -206,7 +206,7 @@ class DynamicLinkService {
     var firebaseDynamicLink = await generateFirebaseDynamicLink(productParams);
     print('[firebase-dynamic-link] $firebaseDynamicLink');
     await Share.share(
-      firebaseDynamicLink.toString(),
+      "$des\n${firebaseDynamicLink.toString()}",
     );
   }
 
@@ -277,6 +277,7 @@ class DynamicLinkService {
         // List<Store> _storeList = isFeature != null ? StoreController().featuredStoreList
         //     : StoreController().latestStoreList;
 
+        Get.find<SplashController>().getModules();
         if( Get.find<SplashController>().moduleList != null) {
           for(ModuleModel module in Get.find<SplashController>().moduleList) {
             if(module.id == moduleId) {
@@ -300,7 +301,7 @@ class DynamicLinkService {
 
         // List<Store> _storeList = isFeature != null ? StoreController().featuredStoreList
         //     : StoreController().latestStoreList;
-
+        Get.find<SplashController>().getModules();
         if( Get.find<SplashController>().moduleList != null) {
           for(ModuleModel module in Get.find<SplashController>().moduleList) {
             if(module.id == moduleId) {

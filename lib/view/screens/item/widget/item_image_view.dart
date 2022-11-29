@@ -78,6 +78,7 @@ class ItemImageView extends StatelessWidget {
                           size: 24,),
                         onPressed: (){
                           DynamicLinkService().shareProductLink(
+                              des: "Buy ${item.name} from ${item.storeName} on PULA BAZAAR",
                               url: Uri.parse('https://tech.pulabazaar.in/item?id=${item.id}&moduleId=${item.moduleId}'),
                               // url: Uri.parse(item.itemUrl+'&moduleId=${item.moduleId}'),
                               moduleId: '${item.moduleId}',

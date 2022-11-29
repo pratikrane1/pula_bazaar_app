@@ -54,7 +54,7 @@ class ApiClient extends GetxService {
       _header.addAll({AppConstants.MODULE_ID: moduleID.toString()});
     }
     else{
-      _header.addAll({AppConstants.MODULE_ID: 1.toString()});
+      _header.addAll({AppConstants.MODULE_ID: 0.toString()});
     }
     _mainHeaders = _header;
   }
@@ -68,6 +68,7 @@ class ApiClient extends GetxService {
         Uri.parse(appBaseUrl+uri),
         headers: headers ?? _mainHeaders,
       ).timeout(Duration(seconds: timeoutInSeconds));
+      print(_response.body);
       return handleResponse(_response, uri);
     } catch (e) {
       print('------------${e.toString()}');

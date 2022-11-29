@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:sixam_mart/controller/auth_controller.dart';
@@ -34,6 +35,8 @@ class StoreDescriptionView extends StatelessWidget {
     var whatsappURl_android = "whatsapp://send?phone=" + whatsapp +
         "&text=$message";
     var whatappURL_ios = "https://wa.me/$whatsapp?text=${Uri.parse(message)}";
+    var whatsappURL_WEB = "https://wa.me/$whatsapp/?text=${Uri.parse(message)}";
+
     if (Platform.isIOS) {
       // for iOS phone only
       if (await canLaunch(whatappURL_ios)) {
@@ -42,7 +45,23 @@ class StoreDescriptionView extends StatelessWidget {
         ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: new Text("whatsapp no installed")));
       }
-    } else {
+    } else if(Platform.isWindows) {
+      if (await canLaunch(whatsappURL_WEB)) {
+        await launch(whatsappURL_WEB);
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: new Text("whatsapp no installed")));
+      }
+    }
+    else if(kIsWeb){
+      if (await canLaunch(whatsappURL_WEB)) {
+        await launch(whatsappURL_WEB);
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: new Text("whatsapp no installed")));
+      }
+    }
+    else {
       // android , web
       if (await canLaunch(whatsappURl_android)) {
         await launch(whatsappURl_android);
@@ -131,10 +150,11 @@ class StoreDescriptionView extends StatelessWidget {
               );
             }),
             SizedBox(width: Dimensions.PADDING_SIZE_SMALL),
-            InkWell(
+            (!kIsWeb)? InkWell(
               // onTap: () => shareReferralCode(),
               onTap: () {
                 DynamicLinkService().shareProductLink(
+                    des: "Shop from ${store.name} on PULA BAZAAR",
                     url: Uri.parse('https://tech.pulabazaar.in/store?id=${store.id}&moduleId=${store.moduleId}'),
                     moduleId: '${store.moduleId}',
                     name: store.name,
@@ -146,7 +166,7 @@ class StoreDescriptionView extends StatelessWidget {
                 decoration: BoxDecoration(borderRadius: BorderRadius.circular(Dimensions.RADIUS_DEFAULT), color: Theme.of(context).primaryColor),
                 child: Center(child: Icon(Icons.share_outlined, color: Colors.white)),
               ) : Icon(Icons.share_outlined, color: Theme.of(context).primaryColor),
-            ),
+            ):SizedBox()
           ]),
           SizedBox(height: Dimensions.PADDING_SIZE_EXTRA_SMALL),
           Text(

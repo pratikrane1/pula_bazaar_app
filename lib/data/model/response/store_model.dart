@@ -117,7 +117,7 @@ class Store {
     delivery = json['delivery'];
     takeAway = json['take_away'];
     scheduleOrder = json['schedule_order'];
-    avgRating = json['avg_rating'].toDouble();
+    avgRating = json['avg_rating'] != null ? json['avg_rating'].toDouble(): null;
     tax = json['tax'] != null ? json['tax'].toDouble() : null;
     ratingCount = json['rating_count '];
     selfDeliverySystem = json['self_delivery_system'];

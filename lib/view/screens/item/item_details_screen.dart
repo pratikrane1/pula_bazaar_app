@@ -61,18 +61,26 @@ class _ItemDetailsScreenState extends State<ItemDetailsScreen> {
         ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: new Text("whatsapp no installed")));
       }
-    } else {
-      // android , web
-      if (await canLaunch(whatsappURl_android)) {
-        await launch(whatsappURl_android);
+    } else if(Platform.isWindows) {
+      if (await canLaunch(whatsappURL_WEB)) {
+        await launch(whatsappURL_WEB);
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: new Text("whatsapp no installed")));
       }
     }
-    if(kIsWeb){
+    else if(kIsWeb){
       if (await canLaunch(whatsappURL_WEB)) {
         await launch(whatsappURL_WEB);
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: new Text("whatsapp no installed")));
+      }
+    }
+    else {
+      // android , web
+      if (await canLaunch(whatsappURl_android)) {
+        await launch(whatsappURl_android);
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: new Text("whatsapp no installed")));
