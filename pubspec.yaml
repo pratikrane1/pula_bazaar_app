@@ -15,9 +15,10 @@ dependencies:
   get: ^4.6.5
   shared_preferences: ^2.0.11
   connectivity: ^3.0.6
-  firebase_core: ^1.20.0
-  firebase_core_platform_interface: 4.5.1
-  firebase_messaging: ^13.0.4 # will satisfy your firebase core things that depend on ^4.5.1
+  firebase_auth: ^4.1.4
+  firebase_core: ^2.3.0
+  firebase_core_platform_interface: 4.5.2
+  firebase_messaging: ^14.1.2 # will satisfy your firebase core things that depend on ^4.5.1
 #  firebase_messaging: ^12.0.1
   flutter_local_notifications: ^9.5.3+1
   path_provider: ^2.0.8
@@ -49,7 +50,7 @@ dependencies:
   image_compression_flutter: ^1.0.2
   dotted_border: ^2.0.0+1
   share_plus: ^4.0.10
-  firebase_dynamic_links: ^4.3.8
+  firebase_dynamic_links: ^5.0.1
   fluttertoast: ^8.0.9
   uni_links: ^0.5.1
 

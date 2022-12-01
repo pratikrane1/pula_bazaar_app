@@ -748,6 +748,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
           AddressModel _address = orderController.addressIndex == -1 ? Get.find<LocationController>().getUserAddress()
               : locationController.addressList[orderController.addressIndex];
           orderController.placeOrder(PlaceOrderBody(
+            prodId: carts[0].itemId.toString(),
             cart: carts, couponDiscountAmount: Get.find<CouponController>().discount, distance: orderController.distance,
             scheduleAt: !storeController.store.scheduleOrder ? null : (orderController.selectedDateSlot == 0
                 && orderController.selectedTimeSlot == 0) ? null : DateConverter.dateToDateAndTime(_scheduleEndDate),

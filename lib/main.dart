@@ -268,52 +268,94 @@ class DynamicLinkService {
     print(item);
 
     if(url.contains('/store')){
-      if(Get.find<AuthController>().isLoggedIn()) {
-        Get.find<StoreController>().getStoreDetails(Store(id: int.parse(id)), true);
-        if(Get.find<CategoryController>().categoryList == null) {
-          Get.find<CategoryController>().getCategoryList(true);
-        }
-        Get.find<StoreController>().getStoreItemList(int.parse(id), 1, 'all', false);
-        // List<Store> _storeList = isFeature != null ? StoreController().featuredStoreList
-        //     : StoreController().latestStoreList;
+      Get.find<StoreController>().getStoreDetails(Store(id: int.parse(id)), true);
+      if(Get.find<CategoryController>().categoryList == null) {
+        Get.find<CategoryController>().getCategoryList(true);
+      }
+      Get.find<StoreController>().getStoreItemList(int.parse(id), 1, 'all', false);
+      // List<Store> _storeList = isFeature != null ? StoreController().featuredStoreList
+      //     : StoreController().latestStoreList;
 
-        Get.find<SplashController>().getModules();
-        if( Get.find<SplashController>().moduleList != null) {
-          for(ModuleModel module in Get.find<SplashController>().moduleList) {
-            if(module.id == moduleId) {
-              Get.find<SplashController>().setModule(module);
-              break;
-            }
+      Get.find<SplashController>().getModules();
+      if( Get.find<SplashController>().moduleList != null) {
+        for(ModuleModel module in Get.find<SplashController>().moduleList) {
+          if(module.id == moduleId) {
+            Get.find<SplashController>().setModule(module);
+            break;
           }
         }
-        Get.toNamed(
-          RouteHelper.getStoreRoute(int.parse(id), 'store'),
-        );
       }
+      Get.toNamed(
+        RouteHelper.getStoreRoute(int.parse(id), 'store'),
+      );
+      // if(Get.find<AuthController>().isLoggedIn()) {
+      //   Get.find<StoreController>().getStoreDetails(Store(id: int.parse(id)), true);
+      //   if(Get.find<CategoryController>().categoryList == null) {
+      //     Get.find<CategoryController>().getCategoryList(true);
+      //   }
+      //   Get.find<StoreController>().getStoreItemList(int.parse(id), 1, 'all', false);
+      //   // List<Store> _storeList = isFeature != null ? StoreController().featuredStoreList
+      //   //     : StoreController().latestStoreList;
+      //
+      //   Get.find<SplashController>().getModules();
+      //   if( Get.find<SplashController>().moduleList != null) {
+      //     for(ModuleModel module in Get.find<SplashController>().moduleList) {
+      //       if(module.id == moduleId) {
+      //         Get.find<SplashController>().setModule(module);
+      //         break;
+      //       }
+      //     }
+      //   }
+      //   Get.toNamed(
+      //     RouteHelper.getStoreRoute(int.parse(id), 'store'),
+      //   );
+      // }
     }else if(url.contains('/item')){
-      if(Get.find<AuthController>().isLoggedIn()) {
-        Get.find<StoreController>().getStoreDetails(Store(id: int.parse(id)), true);
-        if(Get.find<CategoryController>().categoryList == null) {
-          Get.find<CategoryController>().getCategoryList(true);
-        }
-        Get.find<StoreController>().getStoreItemList(int.parse(id), 1, 'all', false);
-        await Get.find<ItemController>().getPopularItemList(true, 'all', false);
 
-        // List<Store> _storeList = isFeature != null ? StoreController().featuredStoreList
-        //     : StoreController().latestStoreList;
-        Get.find<SplashController>().getModules();
-        if( Get.find<SplashController>().moduleList != null) {
-          for(ModuleModel module in Get.find<SplashController>().moduleList) {
-            if(module.id == moduleId) {
-              Get.find<SplashController>().setModule(module);
-              break;
-            }
+      Get.find<StoreController>().getStoreDetails(Store(id: int.parse(id)), true);
+      if(Get.find<CategoryController>().categoryList == null) {
+        Get.find<CategoryController>().getCategoryList(true);
+      }
+      Get.find<StoreController>().getStoreItemList(int.parse(id), 1, 'all', false);
+      await Get.find<ItemController>().getPopularItemList(true, 'all', false);
+
+      // List<Store> _storeList = isFeature != null ? StoreController().featuredStoreList
+      //     : StoreController().latestStoreList;
+      Get.find<SplashController>().getModules();
+      if( Get.find<SplashController>().moduleList != null) {
+        for(ModuleModel module in Get.find<SplashController>().moduleList) {
+          if(module.id == moduleId) {
+            Get.find<SplashController>().setModule(module);
+            break;
           }
         }
-        Get.toNamed(
-          RouteHelper.getItemDetailsRoute(int.parse(id), item),
-        );
       }
+      Get.toNamed(
+        RouteHelper.getItemDetailsRoute(int.parse(id), item),
+      );
+      // if(Get.find<AuthController>().isLoggedIn()) {
+      //   Get.find<StoreController>().getStoreDetails(Store(id: int.parse(id)), true);
+      //   if(Get.find<CategoryController>().categoryList == null) {
+      //     Get.find<CategoryController>().getCategoryList(true);
+      //   }
+      //   Get.find<StoreController>().getStoreItemList(int.parse(id), 1, 'all', false);
+      //   await Get.find<ItemController>().getPopularItemList(true, 'all', false);
+      //
+      //   // List<Store> _storeList = isFeature != null ? StoreController().featuredStoreList
+      //   //     : StoreController().latestStoreList;
+      //   Get.find<SplashController>().getModules();
+      //   if( Get.find<SplashController>().moduleList != null) {
+      //     for(ModuleModel module in Get.find<SplashController>().moduleList) {
+      //       if(module.id == moduleId) {
+      //         Get.find<SplashController>().setModule(module);
+      //         break;
+      //       }
+      //     }
+      //   }
+      //   Get.toNamed(
+      //     RouteHelper.getItemDetailsRoute(int.parse(id), item),
+      //   );
+      // }
     }
 
 

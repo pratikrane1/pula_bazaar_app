@@ -23,6 +23,8 @@ import 'package:get/get.dart';
 import 'package:phone_number/phone_number.dart';
 
 class SignUpScreen extends StatefulWidget {
+  String number;
+  SignUpScreen({@required this.number});
   @override
   _SignUpScreenState createState() => _SignUpScreenState();
 }
@@ -45,11 +47,18 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final TextEditingController _referCodeController = TextEditingController();
   String _countryDialCode;
 
+  String number;
+
   @override
   void initState() {
     super.initState();
 
     _countryDialCode = CountryCode.fromCountryCode(Get.find<SplashController>().configModel.country).dialCode;
+    // _phoneController.text = widget.number;
+    number = widget.number.startsWith('+') ? widget.number : '+'+widget.number.substring(1, widget.number.length);
+
+    _passwordController.text = '12345678';
+    _confirmPasswordController.text='12345678';
   }
 
   @override
@@ -123,54 +132,54 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           divider: true,
                         ),
 
-                        Row(children: [
-                          CodePickerWidget(
-                            onChanged: (CountryCode countryCode) {
-                              _countryDialCode = countryCode.dialCode;
-                            },
-                            initialSelection: CountryCode.fromCountryCode(Get.find<SplashController>().configModel.country).code,
-                            favorite: [CountryCode.fromCountryCode(Get.find<SplashController>().configModel.country).code],
-                            showDropDownButton: true,
-                            padding: EdgeInsets.zero,
-                            showFlagMain: true,
-                            dialogBackgroundColor: Theme.of(context).cardColor,
-                            textStyle: robotoRegular.copyWith(
-                              fontSize: Dimensions.fontSizeLarge, color: Theme.of(context).textTheme.bodyText1.color,
-                            ),
-                          ),
-                          Expanded(child: CustomTextField(
-                            hintText: 'phone'.tr,
-                            controller: _phoneController,
-                            focusNode: _phoneFocus,
-                            nextFocus: _passwordFocus,
-                            inputType: TextInputType.phone,
-                            divider: false,
-                          )),
-                        ]),
+                        // Row(children: [
+                        //   CodePickerWidget(
+                        //     onChanged: (CountryCode countryCode) {
+                        //       _countryDialCode = countryCode.dialCode;
+                        //     },
+                        //     initialSelection: CountryCode.fromCountryCode(Get.find<SplashController>().configModel.country).code,
+                        //     favorite: [CountryCode.fromCountryCode(Get.find<SplashController>().configModel.country).code],
+                        //     showDropDownButton: true,
+                        //     padding: EdgeInsets.zero,
+                        //     showFlagMain: true,
+                        //     dialogBackgroundColor: Theme.of(context).cardColor,
+                        //     textStyle: robotoRegular.copyWith(
+                        //       fontSize: Dimensions.fontSizeLarge, color: Theme.of(context).textTheme.bodyText1.color,
+                        //     ),
+                        //   ),
+                        //   Expanded(child: CustomTextField(
+                        //     hintText: 'phone'.tr,
+                        //     controller: _phoneController,
+                        //     focusNode: _phoneFocus,
+                        //     nextFocus: _passwordFocus,
+                        //     inputType: TextInputType.phone,
+                        //     divider: false,
+                        //   )),
+                        // ]),
                         Padding(padding: EdgeInsets.symmetric(horizontal: Dimensions.PADDING_SIZE_LARGE), child: Divider(height: 1)),
 
-                        CustomTextField(
-                          hintText: 'password'.tr,
-                          controller: _passwordController,
-                          focusNode: _passwordFocus,
-                          nextFocus: _confirmPasswordFocus,
-                          inputType: TextInputType.visiblePassword,
-                          prefixIcon: Images.lock,
-                          isPassword: true,
-                          divider: true,
-                        ),
+                        // CustomTextField(
+                        //   hintText: 'password'.tr,
+                        //   controller: _passwordController,
+                        //   focusNode: _passwordFocus,
+                        //   nextFocus: _confirmPasswordFocus,
+                        //   inputType: TextInputType.visiblePassword,
+                        //   prefixIcon: Images.lock,
+                        //   isPassword: true,
+                        //   divider: true,
+                        // ),
 
-                        CustomTextField(
-                          hintText: 'confirm_password'.tr,
-                          controller: _confirmPasswordController,
-                          focusNode: _confirmPasswordFocus,
-                          nextFocus: Get.find<SplashController>().configModel.refEarningStatus == 1 ? _referCodeFocus : null,
-                          inputAction: Get.find<SplashController>().configModel.refEarningStatus == 1 ? TextInputAction.next : TextInputAction.done,
-                          inputType: TextInputType.visiblePassword,
-                          prefixIcon: Images.lock,
-                          isPassword: true,
-                          onSubmit: (text) => (GetPlatform.isWeb && authController.acceptTerms) ? _register(authController, _countryDialCode) : null,
-                        ),
+                        // CustomTextField(
+                        //   hintText: 'confirm_password'.tr,
+                        //   controller: _confirmPasswordController,
+                        //   focusNode: _confirmPasswordFocus,
+                        //   nextFocus: Get.find<SplashController>().configModel.refEarningStatus == 1 ? _referCodeFocus : null,
+                        //   inputAction: Get.find<SplashController>().configModel.refEarningStatus == 1 ? TextInputAction.next : TextInputAction.done,
+                        //   inputType: TextInputType.visiblePassword,
+                        //   prefixIcon: Images.lock,
+                        //   isPassword: true,
+                        //   onSubmit: (text) => (GetPlatform.isWeb && authController.acceptTerms) ? _register(authController, _countryDialCode) : null,
+                        // ),
 
                         (Get.find<SplashController>().configModel.refEarningStatus == 1 ) ? CustomTextField(
                           hintText: 'refer_code'.tr,
@@ -192,11 +201,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     SizedBox(height: Dimensions.PADDING_SIZE_SMALL),
 
                     !authController.isLoading ? Row(children: [
-                      Expanded(child: CustomButton(
-                        buttonText: 'sign_in'.tr,
-                        transparent: true,
-                        onPressed: () =>Get.toNamed(RouteHelper.getSignInRoute(RouteHelper.signUp)),
-                      )),
+                      // Expanded(child: CustomButton(
+                      //   buttonText: 'sign_in'.tr,
+                      //   transparent: true,
+                      //   onPressed: () =>Get.toNamed(RouteHelper.getSignInRoute(RouteHelper.signUp)),
+                      // )),
                       Expanded(child: CustomButton(
                         buttonText: 'sign_up'.tr,
                         onPressed: authController.acceptTerms ? () => _register(authController, _countryDialCode) : null,
@@ -206,7 +215,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
                     // SocialLoginWidget(),
 
-                    GuestButton(),
+                    // GuestButton(),
 
                   ]);
                 }),
@@ -219,10 +228,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
   }
 
   void _register(AuthController authController, String countryCode) async {
+    PhoneNumber phoneNumber = await PhoneNumberUtil().parse(number);
+
     String _firstName = _firstNameController.text.trim();
     String _lastName = _lastNameController.text.trim();
     String _email = _emailController.text.trim();
-    String _number = _phoneController.text.trim();
+    // String _number = _phoneController.text.trim();
+    String _number = phoneNumber.nationalNumber;
     String _password = _passwordController.text.trim();
     String _confirmPassword = _confirmPasswordController.text.trim();
     String _referCode = _referCodeController.text.trim();

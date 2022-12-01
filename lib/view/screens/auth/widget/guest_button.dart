@@ -8,15 +8,22 @@ class GuestButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextButton(
       style: TextButton.styleFrom(
-        minimumSize: Size(1, 40),
+        minimumSize: Size(20, 50),
+        side: BorderSide(color: Theme.of(context).primaryColor, width: 2),
+
       ),
       onPressed: () {
         Navigator.pushReplacementNamed(context, RouteHelper.getInitialRoute());
       },
-      child: RichText(text: TextSpan(children: [
-        TextSpan(text: '${'continue_as'.tr} ', style: robotoRegular.copyWith(color: Theme.of(context).disabledColor)),
-        TextSpan(text: 'guest'.tr, style: robotoMedium.copyWith(color: Theme.of(context).textTheme.bodyText1.color)),
-      ])),
+      child: SizedBox(
+        width: double.infinity,
+        child: RichText(
+            textAlign: TextAlign.center,
+            text: TextSpan(children: [
+          TextSpan(text: '${'skip'.tr} ', style: robotoBold.copyWith(color: Theme.of(context).primaryColor)),
+          TextSpan(text: 'Login', style: robotoBold.copyWith(color: Theme.of(context).primaryColor)),
+        ])),
+      ),
     );
   }
 }

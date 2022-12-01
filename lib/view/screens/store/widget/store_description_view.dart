@@ -34,8 +34,8 @@ class StoreDescriptionView extends StatelessWidget {
 
     var whatsappURl_android = "whatsapp://send?phone=" + whatsapp +
         "&text=$message";
-    var whatappURL_ios = "https://wa.me/$whatsapp?text=${Uri.parse(message)}";
-    var whatsappURL_WEB = "https://wa.me/$whatsapp/?text=${Uri.parse(message)}";
+    var whatappURL_ios = "https://wa.me/+91$whatsapp?text=${Uri.parse(message)}";
+    var whatsappURL_WEB = "https://api.whatsapp.com/send?phone=$whatsapp&text=${Uri.parse(message)}";
 
     if (Platform.isIOS) {
       // for iOS phone only

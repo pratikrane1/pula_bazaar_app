@@ -111,6 +111,11 @@ class _HomeScreenState extends State<HomeScreen> {
       bool _showMobileModule = !ResponsiveHelper.isDesktop(context) && splashController.module == null && splashController.configModel.module == null;
       bool _isParcel = splashController.module != null && splashController.configModel.moduleConfig.module.isParcel;
 
+      // splashController.switchModule(0, true);
+      // Get.find<SplashController>().setModule(splashController.module);
+      // Get.find<SplashController>().setModule(splashController.moduleList[0]);
+
+
       return Scaffold(
         appBar: ResponsiveHelper.isDesktop(context) ? WebMenuBar() : null,
         endDrawer: MenuDrawer(),

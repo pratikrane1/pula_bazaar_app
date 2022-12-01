@@ -150,9 +150,10 @@ class CheckoutButton extends StatelessWidget {
       width: Dimensions.WEB_MAX_WIDTH,
       padding: ResponsiveHelper.isDesktop(context) ? EdgeInsets.symmetric(vertical: Dimensions.PADDING_SIZE_LARGE) : EdgeInsets.all(Dimensions.PADDING_SIZE_SMALL),
       child: CustomButton(buttonText: 'proceed_to_checkout'.tr, onPressed: () {
-        if(Get.find<SplashController>().module == null) {
-          showCustomSnackBar('choose_a_module_first'.tr);
-        }else if(!cartController.cartList.first.item.scheduleOrder && availableList.contains(false)) {
+        // if(Get.find<SplashController>().module == null) {
+        //   showCustomSnackBar('choose_a_module_first'.tr);
+        // }else
+          if(!cartController.cartList.first.item.scheduleOrder && availableList.contains(false)) {
           showCustomSnackBar('one_or_more_product_unavailable'.tr);
         } else {
           Get.find<CouponController>().removeCouponData(false);
