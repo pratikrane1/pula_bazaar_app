@@ -122,7 +122,7 @@ class _ForgetPassScreenState extends State<ForgetPassScreen> {
       }else {
         Get.find<AuthController>().forgetPassword(_numberWithCountryCode).then((status) async {
           if (status.isSuccess) {
-            Get.toNamed(RouteHelper.getVerificationRoute(_numberWithCountryCode, '', RouteHelper.forgotPassword, ''));
+            // Get.toNamed(RouteHelper.getVerificationRoute(_numberWithCountryCode, '', RouteHelper.forgotPassword, ''));
           }else {
             showCustomSnackBar(status.message);
           }

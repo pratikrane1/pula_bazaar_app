@@ -23,10 +23,10 @@ import 'package:sixam_mart/view/base/menu_drawer.dart';
 class VerificationScreen extends StatefulWidget {
   final String number;
   final bool fromSignUp;
-  final String num;
+  final String countryCode;
   final String token;
   final String password;
-  VerificationScreen({@required this.num,@required this.number, @required this.password, @required this.fromSignUp,
+  VerificationScreen({@required this.countryCode,@required this.number, @required this.password, @required this.fromSignUp,
     @required this.token});
 
   @override
@@ -55,7 +55,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
   void initState() {
     super.initState();
 
-    _number = widget.number.startsWith('+') ? widget.number : '+'+widget.number.substring(1, widget.number.length);
+    _number = widget.number.startsWith('+') ? widget.countryCode+widget.number : '+'+widget.countryCode+widget.number;
     _startTimer();
 
   }
@@ -111,7 +111,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
       firebaseUser_Id=authResult.user.uid.toString();
 
       print("fb_id"+firebaseUser_Id);
-
+      // _login(authController, widget.number);
 
     } else {
       // Fluttertoast.showToast(msg: 'Please enter valid sms code');
@@ -348,36 +348,48 @@ class _VerificationScreenState extends State<VerificationScreen> {
   }
 
   void _login(AuthController authController, String countryDialCode) async {
+    String _numberWithCountryCode =  '+'+widget.countryCode.trim()+widget.number.trim();
     bool _isValid = GetPlatform.isWeb ? true : false;
-    PhoneNumber phoneNumber = await PhoneNumberUtil().parse(_number);
+
+    // PhoneNumber phoneNumber = await PhoneNumberUtil().parse(_number);
     if(!GetPlatform.isWeb) {
       try {
+        PhoneNumber phoneNumber =
+        await PhoneNumberUtil().parse(_numberWithCountryCode);
+        _numberWithCountryCode =
+            '+' + phoneNumber.countryCode + phoneNumber.nationalNumber;
          // phoneNumber = await PhoneNumberUtil().parse(widget.number);
-        _number;
+        // _number;
         _isValid = true;
       } catch (e) {}
     }
 
-      authController.login(_number, pass).then((status) async {
-        if (status.isSuccess) {
-          if (authController.isActiveRememberMe) {
-            authController.saveUserNumberAndPassword(phoneNumber.nationalNumber, pass, phoneNumber.countryCode);
-          } else {
-            authController.clearUserNumberAndPassword();
-          }
-          String _token = status.message.substring(1, status.message.length);
-          // if(Get.find<SplashController>().configModel.customerVerification && int.parse(status.message[0]) == 0) {
-          //   List<int> _encoded = utf8.encode(widget.password);
-          //   String _data = base64Encode(_encoded);
-          //   Get.toNamed(RouteHelper.getVerificationRoute(_numberWithCountryCode, number, _token, RouteHelper.signUp, _data));
-          // }else {
+      // if(!_isValid){
+      //   showCustomSnackBar('invalid_phone_number'.tr);
+      // }
+      // else{
+        authController.login(_numberWithCountryCode, pass).then((status) async {
+          if (status.isSuccess) {
+            if (authController.isActiveRememberMe) {
+              authController.saveUserNumberAndPassword(
+                  widget.number, pass, widget.countryCode);
+            } else {
+              authController.clearUserNumberAndPassword();
+            }
+            String _token = status.message.substring(1, status.message.length);
+            // if(Get.find<SplashController>().configModel.customerVerification && int.parse(status.message[0]) == 0) {
+            //   List<int> _encoded = utf8.encode(widget.password);
+            //   String _data = base64Encode(_encoded);
+            //   Get.toNamed(RouteHelper.getVerificationRoute(_numberWithCountryCode, number, _token, RouteHelper.signUp, _data));
+            // }else {
             Get.toNamed(RouteHelper.getAccessLocationRoute('sign-in'));
-          // }
-        }else {
-          Get.toNamed(RouteHelper.getSignUpRoute(_number));
-          // showCustomSnackBar(status.message);
-        }
-      });
+            // }
+          } else {
+            Get.toNamed(RouteHelper.getSignUpRoute(_number));
+            // showCustomSnackBar(status.message);
+          }
+        });
+      // }
 
   }
 

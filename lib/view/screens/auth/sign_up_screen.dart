@@ -47,7 +47,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final TextEditingController _referCodeController = TextEditingController();
   String _countryDialCode;
 
-  String number;
+  String _number;
 
   @override
   void initState() {
@@ -55,7 +55,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
     _countryDialCode = CountryCode.fromCountryCode(Get.find<SplashController>().configModel.country).dialCode;
     // _phoneController.text = widget.number;
-    number = widget.number.startsWith('+') ? widget.number : '+'+widget.number.substring(1, widget.number.length);
+    _number = widget.number.startsWith('+') ? widget.number : '+'+widget.number;
 
     _passwordController.text = '12345678';
     _confirmPasswordController.text='12345678';
@@ -228,18 +228,20 @@ class _SignUpScreenState extends State<SignUpScreen> {
   }
 
   void _register(AuthController authController, String countryCode) async {
-    PhoneNumber phoneNumber = await PhoneNumberUtil().parse(number);
+    // PhoneNumber phoneNumber = await PhoneNumberUtil().parse(number);
 
     String _firstName = _firstNameController.text.trim();
     String _lastName = _lastNameController.text.trim();
     String _email = _emailController.text.trim();
     // String _number = _phoneController.text.trim();
-    String _number = phoneNumber.nationalNumber;
+    String _number = _phoneController.text.trim();
+    // String _number = phoneNumber.nationalNumber;
     String _password = _passwordController.text.trim();
     String _confirmPassword = _confirmPasswordController.text.trim();
     String _referCode = _referCodeController.text.trim();
 
-    String _numberWithCountryCode = countryCode+_number;
+    // String _numberWithCountryCode = countryCode+_number;
+    String _numberWithCountryCode = '+'+widget.number.trim();
     bool _isValid = GetPlatform.isWeb ? true : false;
     if(!GetPlatform.isWeb) {
       try {
@@ -257,17 +259,20 @@ class _SignUpScreenState extends State<SignUpScreen> {
       showCustomSnackBar('enter_email_address'.tr);
     }else if (!GetUtils.isEmail(_email)) {
       showCustomSnackBar('enter_a_valid_email_address'.tr);
-    }else if (_number.isEmpty) {
-      showCustomSnackBar('enter_phone_number'.tr);
-    }else if (!_isValid) {
-      showCustomSnackBar('invalid_phone_number'.tr);
-    }else if (_password.isEmpty) {
-      showCustomSnackBar('enter_password'.tr);
-    }else if (_password.length < 6) {
-      showCustomSnackBar('password_should_be'.tr);
-    }else if (_password != _confirmPassword) {
-      showCustomSnackBar('confirm_password_does_not_matched'.tr);
-    }else if (_referCode.isNotEmpty && _referCode.length != 10) {
+    }
+    // else if (_number.isEmpty) {
+    //   showCustomSnackBar('enter_phone_number'.tr);
+    // }else if (!_isValid) {
+    //   showCustomSnackBar('invalid_phone_number'.tr);
+    // }else if (_password.isEmpty) {
+    //   showCustomSnackBar('enter_password'.tr);
+    // }else if (_password.length < 6) {
+    //   showCustomSnackBar('password_should_be'.tr);
+    // }else if (_password != _confirmPassword) {
+    //   showCustomSnackBar('confirm_password_does_not_matched'.tr);
+    // }
+    else if (_referCode.isNotEmpty && _referCode.length != 10)
+    {
       showCustomSnackBar('invalid_refer_code'.tr);
     }else {
       SignUpBody signUpBody = SignUpBody(
@@ -279,7 +284,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
           if(Get.find<SplashController>().configModel.customerVerification) {
             List<int> _encoded = utf8.encode(_password);
             String _data = base64Encode(_encoded);
-            Get.toNamed(RouteHelper.getVerificationRoute(_numberWithCountryCode, status.message, RouteHelper.signUp, _data));
+            Get.toNamed(RouteHelper.getVerificationRoute(_number,countryCode,  status.message, RouteHelper.signUp, _data));
           }else {
             Get.toNamed(RouteHelper.getAccessLocationRoute(RouteHelper.signUp));
           }

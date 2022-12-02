@@ -335,69 +335,41 @@ class _SignInScreenState extends State<SignInScreen> {
 
     try {
       await FirebaseAuth.instance.verifyPhoneNumber(
-        phoneNumber: "+91" + number,
+        phoneNumber: "+"+_numberWithCountryCode,
         timeout: const Duration(seconds: 15),
         verificationCompleted: (AuthCredential authCredential) {
           //  signIn(authCredential);
           print('verfication completed called sent called');
 
-
-          //commented on 14/062021
-          // setState(() {
-          //   authStatus = "sucess";
-          // });
-          // if (authStatus != "") {
-          //   scaffoldKey?.currentState?.showSnackBar(SnackBar(
-          //     content: Text(authStatus),
-          //   ));
-          // }
         },
         verificationFailed: (FirebaseAuthException authException) {
           print(authException.message.toString() + "Inside auth failed");
           setState(() {
-            // authStatus = "Authentication failed";
             authStatus = authException.message;
           });
-          // loader.remove();
-          // Helper.hideLoader(loader);
+
           if (authStatus != "") {
-            // scaffoldKey.currentState.showSnackBar(SnackBar(
-            //   content: Text(authStatus),
-            // ));
+
             showCustomSnackBar(authStatus);
-            // Fluttertoast.showToast(msg: authStatus);
 
           }
         },
         codeSent: (String verId, [int forceCodeResent]) {
-          // loader.remove();
-          // Helper.hideLoader(loader);
-          // this.verificationId = verId;
+
           setState(() {
-            // authStatus = "OTP has been successfully sent";
-            // // user.deviceToken = verId;
+
             verificationId = verId;
             loading = false;
-            // Navigator.push(context,MaterialPageRoute(builder: (context)=>
-            //     OtpScreen(
-            //       mobileNum:_mobilecontroller.text,
-            //       verificationId:verificationId.toString(),
-            //     )));
 
-            Get.toNamed(RouteHelper.getVerificationRoute(_numberWithCountryCode,
+
+            Get.toNamed(RouteHelper.getVerificationRoute(number, countryDialCode,
                 verificationId, RouteHelper.signUp, ''));
 
             //  users.deviceToken = verId;
           });
-          // if (authStatus != "") {
-          //   scaffoldKey.currentState!.showSnackBar(SnackBar(
-          //     content: Text(authStatus),
-          //   ));
-          // }
+
         },
         codeAutoRetrievalTimeout: (String verId) {
-          // user.deviceToken = verId;
-          //    print('coderetreival sent called' + verificationId);
           setState(() {
             authStatus = "TIMEOUT";
           });
@@ -446,8 +418,8 @@ class _SignInScreenState extends State<SignInScreen> {
               int.parse(status.message[0]) == 0) {
             List<int> _encoded = utf8.encode(_password);
             String _data = base64Encode(_encoded);
-            Get.toNamed(RouteHelper.getVerificationRoute(
-                _numberWithCountryCode, _token, RouteHelper.signUp, _data));
+            // Get.toNamed(RouteHelper.getVerificationRoute(
+            //     _numberWithCountryCode, _token, RouteHelper.signUp, _data));
           } else {
             Get.toNamed(RouteHelper.getAccessLocationRoute('sign-in'));
           }

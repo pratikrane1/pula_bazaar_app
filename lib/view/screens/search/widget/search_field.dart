@@ -18,6 +18,12 @@ class SearchField extends StatefulWidget {
 
 class _SearchFieldState extends State<SearchField> {
   FocusNode focusNode;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return TextField(
