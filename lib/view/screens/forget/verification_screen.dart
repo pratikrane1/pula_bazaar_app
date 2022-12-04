@@ -44,6 +44,8 @@ class _VerificationScreenState extends State<VerificationScreen> {
   String authStatus="",deviceId="",token="";
   String pass='12345678';
   final TextEditingController _otpController = TextEditingController();
+  bool loading = false;
+  var verificationId;
 
 
 
@@ -56,6 +58,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
     super.initState();
 
     _number = widget.number.startsWith('+') ? widget.countryCode+widget.number : '+'+widget.countryCode+widget.number;
+    verificationId = widget.token ?? '';
     _startTimer();
 
   }
@@ -79,7 +82,9 @@ class _VerificationScreenState extends State<VerificationScreen> {
     _timer?.cancel();
   }
 
-  Future<dynamic> checkotp(dynamic phone,String verificationId) async {
+  Future<dynamic> checkotp(dynamic phone,AuthController authController,String verificationId) async {
+    otp = authController.verificationCode;
+
     if (verificationId != null && otp != null) {
       try {
         // authservice =await FirebaseAuth.instance(
@@ -89,7 +94,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
         // ));
         authservice =
             PhoneAuthProvider.credential(
-              verificationId: widget.token.toString(),
+              verificationId: verificationId,
               smsCode: otp,
             );
       } catch (e) {
@@ -97,10 +102,10 @@ class _VerificationScreenState extends State<VerificationScreen> {
       }
     }
     // call signin method
-    signIn(authservice, phone);
+    signIn(authservice,authController, phone);
   }
 
-  signIn(AuthCredential credential, phone) async {
+  signIn(AuthCredential credential,AuthController authController, phone) async {
     authResult = await FirebaseAuth.instance
         .signInWithCredential(credential)
         .catchError((onError) {
@@ -111,7 +116,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
       firebaseUser_Id=authResult.user.uid.toString();
 
       print("fb_id"+firebaseUser_Id);
-      // _login(authController, widget.number);
+      _login(authController, widget.number);
 
     } else {
       // Fluttertoast.showToast(msg: 'Please enter valid sms code');
@@ -119,7 +124,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
     }
   }
 
-  Future<void> verifyPhoneNumber(BuildContext context,String number) async {
+  Future<void> verifyPhoneNumber(BuildContext context,AuthController authController,String number) async {
 
     try {
       await FirebaseAuth.instance.verifyPhoneNumber(
@@ -141,7 +146,10 @@ class _VerificationScreenState extends State<VerificationScreen> {
         },
         codeSent: (String verId, [int forceCodeResent]) {
           setState(() {
-            checkotp(widget.number,verId);
+
+            verificationId = verId;
+            loading = false;
+            // checkotp(number,authController,verificationId);
           });
         },
         codeAutoRetrievalTimeout: (String verId) {
@@ -226,7 +234,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
                 TextButton(
                   onPressed: _seconds < 1 ? () {
                     _startTimer();
-                    verifyPhoneNumber(context, _number);
+                    verifyPhoneNumber(context,authController, _number);
 
                     // if(widget.fromSignUp) {
                     //   authController.login(_number, widget.password).then((value) {
@@ -261,7 +269,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
                     otp = authController.verificationCode;
                     // checkotp(widget.number,widget.token.toString());
 
-                  if (widget.token.toString() != null && otp != null) {
+                  if (verificationId != null && otp != null) {
                         try {
                           // authservice =await FirebaseAuth.instance(
                           //     PhoneAuthProvider.credential(
@@ -270,7 +278,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
                           // ));
                           authservice =
                               PhoneAuthProvider.credential(
-                                verificationId: widget.token.toString(),
+                                verificationId: verificationId,
                                 smsCode: otp,
                               );
                         } catch (e) {
