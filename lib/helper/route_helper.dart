@@ -120,9 +120,9 @@ class RouteHelper {
   static String getLanguageRoute(String page) => '$language?page=$page';
   static String getOnBoardingRoute() => '$onBoarding';
   static String getSignInRoute(String page) => '$signIn?page=$page';
-  static String getSignUpRoute() => '$signUp';
-  static String getVerificationRoute(String number, String token, String page, String pass) {
-    return '$verification?page=$page&number=$number&token=$token&pass=$pass';
+  static String getSignUpRoute(String number) => '$signUp?number=$number';
+  static String getVerificationRoute(String number,String countryCode, String token, String page, String pass) {
+    return '$verification?page=$page&number=$number&countryCode=$countryCode&token=$token&pass=$pass';
   }
   static String getAccessLocationRoute(String page) => '$accessLocation?page=$page';
   static String getPickMapRoute(String page, bool canRoute) => '$pickMap?page=$page&route=${canRoute.toString()}';
@@ -214,12 +214,12 @@ class RouteHelper {
     GetPage(name: signIn, page: () => SignInScreen(
       exitFromApp: Get.parameters['page'] == signUp || Get.parameters['page'] == splash || Get.parameters['page'] == onBoarding,
     )),
-    GetPage(name: signUp, page: () => SignUpScreen()),
+    GetPage(name: signUp, page: () => SignUpScreen(number: Get.parameters['number'],)),
     GetPage(name: verification, page: () {
       List<int> _decode = base64Decode(Get.parameters['pass'].replaceAll(' ', '+'));
       String _data = utf8.decode(_decode);
       return VerificationScreen(
-        number: Get.parameters['number'], fromSignUp: Get.parameters['page'] == signUp, token: Get.parameters['token'],
+        number: Get.parameters['number'],countryCode: Get.parameters['countryCode'], fromSignUp: Get.parameters['page'] == signUp, token: Get.parameters['token'],
         password: _data,
       );
     }),

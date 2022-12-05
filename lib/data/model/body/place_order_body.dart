@@ -30,9 +30,11 @@ class PlaceOrderBody {
   String _house;
   String _floor;
   String _dmTips;
+  String _prodId;
 
   PlaceOrderBody(
-      {@required List<Cart> cart,
+      {      @required String prodId,
+        @required List<Cart> cart,
         @required double couponDiscountAmount,
         @required String couponCode,
         @required double orderAmount,
@@ -58,6 +60,7 @@ class PlaceOrderBody {
         @required String floor,
         @required String dmTips,
       }) {
+    this._prodId = prodId;
     this._cart = cart;
     this._couponDiscountAmount = couponDiscountAmount;
     this._orderAmount = orderAmount;
@@ -85,6 +88,7 @@ class PlaceOrderBody {
     this._dmTips = dmTips;
   }
 
+  String get prodId => _prodId;
   List<Cart> get cart => _cart;
   double get couponDiscountAmount => _couponDiscountAmount;
   double get orderAmount => _orderAmount;
@@ -117,6 +121,7 @@ class PlaceOrderBody {
         _cart.add(new Cart.fromJson(v));
       });
     }
+    _prodId=json['item_id'];
     _couponDiscountAmount = json['coupon_discount_amount'];
     _orderAmount = json['order_amount'];
     _orderType = json['order_type'];
@@ -152,6 +157,7 @@ class PlaceOrderBody {
       data['coupon_discount_amount'] = this._couponDiscountAmount.toString();
     }
     data['order_amount'] = this._orderAmount.toString();
+    data['item_id'] = this._prodId.toString();
     data['order_type'] = this._orderType;
     data['payment_method'] = this._paymentMethod;
     if(this._orderNote != null && this._orderNote.isNotEmpty) {

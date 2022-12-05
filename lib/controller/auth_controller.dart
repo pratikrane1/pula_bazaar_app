@@ -71,7 +71,7 @@ class AuthController extends GetxController implements GetxService {
       String _token = response.body['token'];
       if(_token != null && _token.isNotEmpty) {
         if(Get.find<SplashController>().configModel.customerVerification && response.body['is_phone_verified'] == 0) {
-          Get.toNamed(RouteHelper.getVerificationRoute(socialLogInBody.email, _token, RouteHelper.signUp, ''));
+          Get.toNamed(RouteHelper.getVerificationRoute(socialLogInBody.email,'', _token, RouteHelper.signUp, ''));
         }else {
           authRepo.saveUserToken(response.body['token']);
           await authRepo.updateToken();
@@ -94,7 +94,7 @@ class AuthController extends GetxController implements GetxService {
     if (response.statusCode == 200) {
       String _token = response.body['token'];
       if(Get.find<SplashController>().configModel.customerVerification && response.body['is_phone_verified'] == 0) {
-        Get.toNamed(RouteHelper.getVerificationRoute(socialLogInBody.phone, _token, RouteHelper.signUp, ''));
+        Get.toNamed(RouteHelper.getVerificationRoute(socialLogInBody.phone,'', _token, RouteHelper.signUp, ''));
       }else {
         authRepo.saveUserToken(response.body['token']);
         await authRepo.updateToken();

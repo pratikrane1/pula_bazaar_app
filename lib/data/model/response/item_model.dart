@@ -58,6 +58,10 @@ class Item {
   String unitType;
   int stock;
   String availableDateStarts;
+  String weight;
+  String storePhone;
+  String privacyPolicy;
+  String itemUrl;
 
   Item(
       {this.id,
@@ -86,6 +90,10 @@ class Item {
         this.moduleId,
         this.unitType,
         this.stock,
+        this.weight,
+        this.storePhone,
+        this.privacyPolicy,
+        this.itemUrl,
       });
 
   Item.fromJson(Map<String, dynamic> json) {
@@ -136,6 +144,10 @@ class Item {
     stock = json['stock'];
     unitType = json['unit_type'];
     availableDateStarts = json['available_date_starts'];
+    weight = json['weight'];
+    storePhone = json['phone'];
+    privacyPolicy = json['privacy_policy'];
+    itemUrl = json['item_url'];
   }
 
   Map<String, dynamic> toJson() {
@@ -176,6 +188,10 @@ class Item {
     data['stock'] = this.stock;
     data['unit_type'] = this.unitType;
     data['available_date_starts'] = this.availableDateStarts;
+    data['weight'] = this.weight;
+    data['phone'] = this.storePhone;
+    data['privacy_policy'] = this.privacyPolicy;
+    data['item_url'] = this.itemUrl;
     return data;
   }
 }

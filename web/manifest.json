@@ -1,7 +1,7 @@
 {
     "name": "PULA BAZAAR",
     "short_name": "PULA BAZAAR",
-    "start_url": ".",
+    "start_url": "",
     "display": "standalone",
     "background_color": "#2A9849",
     "theme_color": "#2A9849",

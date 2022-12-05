@@ -1,3 +1,6 @@
+import 'package:flutter/foundation.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:sixam_mart/controller/auth_controller.dart';
 import 'package:sixam_mart/controller/store_controller.dart';
 import 'package:sixam_mart/controller/splash_controller.dart';
@@ -13,10 +16,69 @@ import 'package:sixam_mart/view/base/custom_image.dart';
 import 'package:sixam_mart/view/base/custom_snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'dart:io' show Platform;
+
+import 'package:url_launcher/url_launcher.dart';
+
+import '../../../../main.dart';
+
 
 class StoreDescriptionView extends StatelessWidget {
   final Store store;
   StoreDescriptionView({@required this.store});
+
+
+  _launchWhatsapp(BuildContext context, Store store) async {
+    var whatsapp = store.phone.toString();
+    var message = "Hi ${store.name}, I have a Query. Can you please help me?";
+
+    var whatsappURl_android = "whatsapp://send?phone=" + whatsapp +
+        "&text=$message";
+    var whatappURL_ios = "https://wa.me/+91$whatsapp?text=${Uri.parse(message)}";
+    var whatsappURL_WEB = "https://api.whatsapp.com/send?phone=$whatsapp&text=${Uri.parse(message)}";
+
+    if (Platform.isIOS) {
+      // for iOS phone only
+      if (await canLaunch(whatappURL_ios)) {
+        await launch(whatappURL_ios, forceSafariVC: false);
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: new Text("whatsapp no installed")));
+      }
+    } else if(Platform.isWindows) {
+      if (await canLaunch(whatsappURL_WEB)) {
+        await launch(whatsappURL_WEB);
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: new Text("whatsapp no installed")));
+      }
+    }
+    else if(kIsWeb){
+      if (await canLaunch(whatsappURL_WEB)) {
+        await launch(whatsappURL_WEB);
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: new Text("whatsapp no installed")));
+      }
+    }
+    else {
+      // android , web
+      if (await canLaunch(whatsappURl_android)) {
+        await launch(whatsappURl_android);
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: new Text("whatsapp no installed")));
+      }
+    }
+  }
+
+
+  Future<void> shareReferralCode() async {
+    await Share.share(
+      'https://pulabazaarapp.page.link/test',
+      subject: 'Store URL'
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -87,6 +149,24 @@ class StoreDescriptionView extends StatelessWidget {
                 ),
               );
             }),
+            SizedBox(width: Dimensions.PADDING_SIZE_SMALL),
+            (!kIsWeb)? InkWell(
+              // onTap: () => shareReferralCode(),
+              onTap: () {
+                DynamicLinkService().shareProductLink(
+                    des: "Shop from ${store.name} on PULA BAZAAR",
+                    url: Uri.parse('https://tech.pulabazaar.in/store?id=${store.id}&moduleId=${store.moduleId}'),
+                    moduleId: '${store.moduleId}',
+                    name: store.name,
+                    image: '${Get.find<SplashController>().configModel.baseUrls.storeImageUrl}/${store.logo}');
+
+              },
+              child: ResponsiveHelper.isDesktop(context) ? Container(
+                padding: EdgeInsets.all(Dimensions.PADDING_SIZE_SMALL),
+                decoration: BoxDecoration(borderRadius: BorderRadius.circular(Dimensions.RADIUS_DEFAULT), color: Theme.of(context).primaryColor),
+                child: Center(child: Icon(Icons.share_outlined, color: Colors.white)),
+              ) : Icon(Icons.share_outlined, color: Theme.of(context).primaryColor),
+            ):SizedBox()
           ]),
           SizedBox(height: Dimensions.PADDING_SIZE_EXTRA_SMALL),
           Text(
@@ -104,6 +184,32 @@ class StoreDescriptionView extends StatelessWidget {
               style: robotoMedium.copyWith(fontSize: Dimensions.fontSizeExtraSmall, color: Theme.of(context).primaryColor),
             ),
           ]),
+          SizedBox(height: Dimensions.PADDING_SIZE_EXTRA_SMALL),
+          Row(
+            children: [
+
+              Icon(Icons.call, size: 15,),
+              SizedBox(width: Dimensions.PADDING_SIZE_EXTRA_SMALL),
+
+              Text(
+                store.phone ?? '', maxLines: 1, overflow: TextOverflow.ellipsis,
+                style: robotoRegular.copyWith(fontSize: Dimensions.fontSizeSmall, color: Theme.of(context).disabledColor),
+              ),
+            ],
+          ),
+
+          SizedBox(height: Dimensions.PADDING_SIZE_EXTRA_SMALL),
+          Row(
+            children: [
+              Icon(Icons.email_outlined, size: 15,),
+              SizedBox(width: Dimensions.PADDING_SIZE_EXTRA_SMALL),
+              Text(
+                store.email ?? '', maxLines: 1, overflow: TextOverflow.ellipsis,
+                style: robotoRegular.copyWith(fontSize: Dimensions.fontSizeSmall, color: Theme.of(context).disabledColor),
+              ),
+            ],
+          )
+
         ])),
 
       ]),
@@ -144,6 +250,22 @@ class StoreDescriptionView extends StatelessWidget {
           ]),
         ),
         Expanded(child: SizedBox()),
+        InkWell(
+          // onTap: () => _launchWhatsapp(context, store),
+          onTap: () {
+            if(store.phone != null){
+              _launchWhatsapp(context, store);
+            }else{
+              Fluttertoast.showToast(msg: "Phone Number not available");
+            }
+          },
+          child: Column(children: [
+            Icon(Icons.whatsapp, color: Theme.of(context).primaryColor, size: 20),
+            SizedBox(width: Dimensions.PADDING_SIZE_EXTRA_SMALL),
+            Text('Chat'.tr, style: robotoRegular.copyWith(fontSize: Dimensions.fontSizeSmall, color: _textColor)),
+          ]),
+        ),
+        Expanded(child: SizedBox()),
         Column(children: [
           Row(children: [
             Icon(Icons.timer, color: Theme.of(context).primaryColor, size: 20),
@@ -156,6 +278,7 @@ class StoreDescriptionView extends StatelessWidget {
           SizedBox(width: Dimensions.PADDING_SIZE_EXTRA_SMALL),
           Text('delivery_time'.tr, style: robotoRegular.copyWith(fontSize: Dimensions.fontSizeSmall, color: _textColor)),
         ]),
+
         (store.delivery && store.freeDelivery) ? Expanded(child: SizedBox()) : SizedBox(),
         (store.delivery && store.freeDelivery) ? Column(children: [
           Icon(Icons.money_off, color: Theme.of(context).primaryColor, size: 20),

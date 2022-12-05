@@ -1,3 +1,5 @@
+
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sixam_mart/controller/cart_controller.dart';
@@ -21,6 +23,10 @@ import 'package:sixam_mart/view/screens/item/widget/details_app_bar.dart';
 import 'package:sixam_mart/view/screens/item/widget/details_web_view.dart';
 import 'package:sixam_mart/view/screens/item/widget/item_image_view.dart';
 import 'package:sixam_mart/view/screens/item/widget/item_title_view.dart';
+import 'dart:io' show Platform;
+
+import 'package:url_launcher/url_launcher.dart';
+
 
 class ItemDetailsScreen extends StatefulWidget {
   final Item item;
@@ -35,6 +41,52 @@ class _ItemDetailsScreenState extends State<ItemDetailsScreen> {
   final Size size = Get.size;
   GlobalKey<ScaffoldMessengerState> _globalKey = GlobalKey();
   final GlobalKey<DetailsAppBarState> _key = GlobalKey();
+
+  String descText = "* Description Line 1\n* Description Line 2\n* Description Line 3\n* Description Line 4\n* Description Line 5\n* Description Line 6\n* Description Line 7\n* Description Line 8";
+  bool descTextShowFlag = false;
+
+  _launchWhatsapp(BuildContext context, Item item) async {
+    var whatsapp = item.storePhone.toString();
+    var message = "Hi ${item.storeName}, I have a Query. Can you please help me?";
+
+    var whatsappURl_android = "whatsapp://send?phone=" + whatsapp +
+        "&text=$message";
+    var whatsappURL_WEB = "https://wa.me/$whatsapp/?text=${Uri.parse(message)}";
+    var whatappURL_ios = "https://wa.me/$whatsapp?text=${Uri.parse(message)}";
+    if (Platform.isIOS) {
+      // for iOS phone only
+      if (await canLaunch(whatappURL_ios)) {
+        await launch(whatappURL_ios, forceSafariVC: false);
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: new Text("whatsapp no installed")));
+      }
+    } else if(Platform.isWindows) {
+      if (await canLaunch(whatsappURL_WEB)) {
+        await launch(whatsappURL_WEB);
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: new Text("whatsapp no installed")));
+      }
+    }
+    else if(kIsWeb){
+      if (await canLaunch(whatsappURL_WEB)) {
+        await launch(whatsappURL_WEB);
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: new Text("whatsapp no installed")));
+      }
+    }
+    else {
+      // android , web
+      if (await canLaunch(whatsappURl_android)) {
+        await launch(whatsappURl_android);
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: new Text("whatsapp no installed")));
+      }
+    }
+  }
 
   @override
   void initState() {
@@ -220,7 +272,57 @@ class _ItemDetailsScreenState extends State<ItemDetailsScreen> {
                       color: Theme.of(context).primaryColor, fontSize: Dimensions.fontSizeLarge,
                     )),
                   ]),
+
                   SizedBox(height: Dimensions.PADDING_SIZE_EXTRA_LARGE),
+
+                  (itemController.item.weight!=null)
+                  ? Row(
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.fromLTRB(0, 5, 5, 5),
+                        child: Text(
+                          'Weight:', style: robotoMedium
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.fromLTRB(0, 5, 5, 5),
+                        child: Text(
+                          itemController.item.weight,
+                          style: robotoRegular.copyWith(fontSize: Dimensions.fontSizeDefault),
+                        ),
+                      ),
+                    ],
+                  ) : SizedBox(),
+
+                  (itemController.item.storePhone != null) ? Row(
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.fromLTRB(0, 5, 5, 5),
+                        child: Text(
+                          'Chat:', style: robotoMedium
+                        ),
+                      ),
+                      InkWell(
+                        onTap: (){
+                          _launchWhatsapp(context, itemController.item);
+                        },
+                        child: Row(
+                          children: [
+                            Text(
+                              itemController.item.storePhone,
+                              style: robotoRegular.copyWith(fontSize: Dimensions.fontSizeDefault),
+                            ),
+                            Icon(Icons.whatsapp, color: Theme.of(context).primaryColor, size: 20),
+                          ],
+                        ),
+                      ),
+
+                    ],
+                  ) :
+                      SizedBox(),
+
+                  SizedBox(height: Dimensions.PADDING_SIZE_EXTRA_LARGE),
+
 
                   (itemController.item.description != null && itemController.item.description.isNotEmpty) ? Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -231,6 +333,52 @@ class _ItemDetailsScreenState extends State<ItemDetailsScreen> {
                       SizedBox(height: Dimensions.PADDING_SIZE_LARGE),
                     ],
                   ) : SizedBox(),
+
+
+                  (itemController.item.privacyPolicy != null) ?
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Divider(height: 20, thickness: 2),
+
+                      Text("Shipping Policy",style: robotoMedium),
+                      SizedBox(height: Dimensions.PADDING_SIZE_EXTRA_SMALL),
+
+                      Text(itemController.item.privacyPolicy,
+                        maxLines: descTextShowFlag ? itemController.item.privacyPolicy.length : 4,textAlign: TextAlign.start,style: robotoRegular,),
+
+                      InkWell(
+                        onTap: (){ setState(() {
+                          descTextShowFlag = !descTextShowFlag;
+                        }); },
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: <Widget>[
+                            descTextShowFlag
+                                ?
+                            Row(
+                              children: [
+
+
+                                Text("Read Less",style: TextStyle(color: Colors.blue),),
+                                Icon(Icons.arrow_drop_up),
+                              ],
+                            )
+                                :
+                            Row(
+                              children: [
+
+                                Text("Read More",style: TextStyle(color: Colors.blue)),
+                                Icon(Icons.arrow_drop_down),
+                              ],
+                            )
+                          ],
+                        ),
+                      ),
+                    ],
+                  )
+                      :
+                      SizedBox()
                 ],
               )))),
             )),

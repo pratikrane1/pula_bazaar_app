@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:sixam_mart/controller/item_controller.dart';
 import 'package:sixam_mart/controller/splash_controller.dart';
 import 'package:sixam_mart/data/model/response/item_model.dart';
@@ -7,6 +8,8 @@ import 'package:sixam_mart/helper/responsive_helper.dart';
 import 'package:sixam_mart/helper/route_helper.dart';
 import 'package:sixam_mart/util/dimensions.dart';
 import 'package:sixam_mart/view/base/custom_image.dart';
+
+import '../../../../main.dart';
 
 class ItemImageView extends StatelessWidget {
   final Item item;
@@ -63,6 +66,33 @@ class ItemImageView extends StatelessWidget {
                     ),
                   ),
                 ),
+                Positioned(
+                  top: 5,
+                  right: 10,
+                  child: CircleAvatar(
+                      radius: 20,
+                      backgroundColor: Theme.of(context).disabledColor.withOpacity(0.5),
+                      child: IconButton(
+                        icon: Icon(Icons.share_outlined,
+                          color: Colors.black,
+                          size: 24,),
+                        onPressed: (){
+                          DynamicLinkService().shareProductLink(
+                              des: "Buy ${item.name} from ${item.storeName} on PULA BAZAAR",
+                              url: Uri.parse('https://tech.pulabazaar.in/item?id=${item.id}&moduleId=${item.moduleId}'),
+                              // url: Uri.parse(item.itemUrl+'&moduleId=${item.moduleId}'),
+                              moduleId: '${item.moduleId}',
+                              name: item.name,
+                              image: '${Get.find<SplashController>().
+                              configModel.baseUrls.itemImageUrl}/${item.image}');
+                              // DynamicLinkService().shareProductLink(
+                              //     storeID: '${store.id}',
+                              //     name: store.name,
+                              //     image: '${Get.find<SplashController>().configModel.baseUrls.storeImageUrl}/${store.logo}');
+                        },
+                      )
+                  ),
+                )
 
               ]),
             ),

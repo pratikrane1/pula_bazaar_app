@@ -1,3 +1,9 @@
+import 'dart:async';
+
+import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:sixam_mart/controller/auth_controller.dart';
 import 'package:sixam_mart/controller/banner_controller.dart';
 import 'package:sixam_mart/controller/campaign_controller.dart';
@@ -31,7 +37,13 @@ import 'package:get/get.dart';
 import 'package:sixam_mart/view/screens/home/widget/module_view.dart';
 import 'package:sixam_mart/view/screens/parcel/parcel_category_screen.dart';
 
+import '../../../main.dart';
+
+
+
 class HomeScreen extends StatefulWidget {
+
+
 
   static Future<void> loadData(bool reload) async {
     if(Get.find<SplashController>().module != null && !Get.find<SplashController>().configModel.moduleConfig.module.isParcel) {
@@ -68,12 +80,23 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   final ScrollController _scrollController = ScrollController();
 
+
   @override
   void initState() {
     super.initState();
+    if(!kIsWeb){
+      DynamicLinkService.initDynamicLinks();
+
+    }
+
 
     HomeScreen.loadData(false);
   }
+
+
+
+
+
 
   @override
   void dispose() {
@@ -87,6 +110,11 @@ class _HomeScreenState extends State<HomeScreen> {
     return GetBuilder<SplashController>(builder: (splashController) {
       bool _showMobileModule = !ResponsiveHelper.isDesktop(context) && splashController.module == null && splashController.configModel.module == null;
       bool _isParcel = splashController.module != null && splashController.configModel.moduleConfig.module.isParcel;
+
+      // splashController.switchModule(0, true);
+      // Get.find<SplashController>().setModule(splashController.module);
+      // Get.find<SplashController>().setModule(splashController.moduleList[0]);
+
 
       return Scaffold(
         appBar: ResponsiveHelper.isDesktop(context) ? WebMenuBar() : null,
@@ -118,11 +146,15 @@ class _HomeScreenState extends State<HomeScreen> {
                 await Get.find<StoreController>().getFeaturedStoreList();
               }
             },
-            child: ResponsiveHelper.isDesktop(context) ? WebHomeScreen(
+            child: ResponsiveHelper.isDesktop(context) ?
+            WebHomeScreen(
               scrollController: _scrollController,
-            ) : (Get.find<SplashController>().module != null && Get.find<SplashController>().module.themeId == 2) ? Theme1HomeScreen(
+            ) :
+            (Get.find<SplashController>().module != null && Get.find<SplashController>().module.themeId == 2) ?
+            Theme1HomeScreen(
               scrollController: _scrollController, splashController: splashController, showMobileModule: _showMobileModule,
-            ) : CustomScrollView(
+            ) :
+            CustomScrollView(
               controller: _scrollController,
               physics: AlwaysScrollableScrollPhysics(),
               slivers: [
@@ -191,7 +223,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
 
                 // Search Button
-                !_showMobileModule ? SliverPersistentHeader(
+                // !_showMobileModule ?
+                SliverPersistentHeader(
                   pinned: true,
                   delegate: SliverDelegate(child: Center(child: Container(
                     height: 50, width: Dimensions.WEB_MAX_WIDTH,
@@ -223,12 +256,14 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ),
                   ))),
-                ) : SliverToBoxAdapter(),
+                ) ,
+                    // : SliverToBoxAdapter(),
 
                 SliverToBoxAdapter(
                   child: Center(child: SizedBox(
                     width: Dimensions.WEB_MAX_WIDTH,
-                    child: !_showMobileModule ? Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                    child: !_showMobileModule ?
+                    Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
 
                       BannerView(isFeatured: false),
                       CategoryView(),

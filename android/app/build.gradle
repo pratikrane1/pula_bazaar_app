@@ -66,7 +66,8 @@ android {
         release {
             // TODO: Add your own signing config for the release build.
             // Signing with the debug keys for now, so `flutter run --release` works.
-            signingConfig signingConfigs.debug
+//            signingConfig signingConfigs.debug
+            signingConfig signingConfigs.release
         }
     }
 }
@@ -78,4 +79,11 @@ flutter {
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation "com.google.firebase:firebase-messaging:21.0.1"
+    // Import the BoM for the Firebase platform
+    implementation platform('com.google.firebase:firebase-bom:30.5.0')
+
+    // Add the dependencies for the Dynamic Links and Analytics libraries
+    // When using the BoM, you don't specify versions in Firebase library dependencies
+    implementation 'com.google.firebase:firebase-dynamic-links'
+    implementation 'com.google.firebase:firebase-analytics'
 }

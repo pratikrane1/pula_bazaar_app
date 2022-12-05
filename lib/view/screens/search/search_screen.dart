@@ -28,10 +28,12 @@ class SearchScreen extends StatefulWidget {
 class _SearchScreenState extends State<SearchScreen> {
   final TextEditingController _searchController = TextEditingController();
   bool _isLoggedIn;
+  // SplashController splashController;
 
   @override
   void initState() {
     super.initState();
+    // splashController.switchModule(0, true);
 
     _isLoggedIn = Get.find<AuthController>().isLoggedIn();
     if(_isLoggedIn) {
