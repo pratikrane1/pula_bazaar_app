@@ -172,10 +172,10 @@ class DynamicLinkService {
         packageName: "com.pula.bazaar",
         minimumVersion: 0,
       ),
-      // iosParameters: IOSParameters(
-      //   bundleId: firebaseDynamicLinkConfig['iOSBundleId'],
-      //   minimumVersion: firebaseDynamicLinkConfig['iOSAppMinimumVersion'],
-      // ),
+      iosParameters: IOSParameters(
+        bundleId: "com.destek.pulabazaar",
+        minimumVersion: '0',
+      ),
       socialMetaTagParameters: SocialMetaTagParameters(
         title: title,
         imageUrl: Uri.parse(image),
