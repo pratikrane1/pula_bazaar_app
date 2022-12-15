@@ -1,4 +1,4 @@
-
+import 'package:universal_html/html.dart' as html;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -62,20 +62,24 @@ class _ItemDetailsScreenState extends State<ItemDetailsScreen> {
             SnackBar(content: new Text("whatsapp no installed")));
       }
     } else if(Platform.isWindows) {
-      if (await canLaunch(whatsappURL_WEB)) {
-        await launch(whatsappURL_WEB);
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: new Text("whatsapp no installed")));
-      }
+      html.window.open(whatsappURL_WEB,"_blank");
+
+      // if (await canLaunch(whatsappURL_WEB)) {
+      //   await launch(whatsappURL_WEB);
+      // } else {
+      //   ScaffoldMessenger.of(context).showSnackBar(
+      //       SnackBar(content: new Text("whatsapp no installed")));
+      // }
     }
     else if(kIsWeb){
-      if (await canLaunch(whatsappURL_WEB)) {
-        await launch(whatsappURL_WEB);
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: new Text("whatsapp no installed")));
-      }
+      html.window.open(whatsappURL_WEB,"_blank");
+
+      // if (await canLaunch(whatsappURL_WEB)) {
+      //   await launch(whatsappURL_WEB,forceSafariVC: true,enableJavaScript: true,forceWebView: true,universalLinksOnly: true);
+      // } else {
+      //   ScaffoldMessenger.of(context).showSnackBar(
+      //       SnackBar(content: new Text("whatsapp no installed")));
+      // }
     }
     else {
       // android , web
@@ -304,7 +308,14 @@ class _ItemDetailsScreenState extends State<ItemDetailsScreen> {
                       ),
                       InkWell(
                         onTap: (){
-                          _launchWhatsapp(context, itemController.item);
+                          var whatsappNo = itemController.item.storePhone.toString();
+                          var message = "Hi ${itemController.item.storeName}, I have a Query. Can you please help me?";
+
+                          if(kIsWeb){
+                            html.window.open('https://api.whatsapp.com/send?phone=${whatsappNo}&text=${message}',"_blank");
+                          }else {
+                            _launchWhatsapp(context, itemController.item);
+                          }
                         },
                         child: Row(
                           children: [

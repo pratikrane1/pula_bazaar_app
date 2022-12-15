@@ -42,11 +42,17 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   if(GetPlatform.isWeb){
     await Firebase.initializeApp(options: FirebaseOptions(
-      apiKey: 'AIzaSyDFN-73p8zKVZbA0i5DtO215XzAb-xuGSE',
-      appId: '1:1000163153346:web:4f702a4b5adbd5c906b25b',
-      messagingSenderId: 'G-L1GNL2YV61',
-      projectId: 'ammart-8885e',
+      apiKey: 'AIzaSyDcSvd77NEgiDZCqVRqiXhV1rf-ykbKvXI',
+      appId: '1:943340280765:web:54575132c8b33665e350d4',
+      messagingSenderId: '943340280765',
+      projectId: 'pula-bazaar',
     ));
+    // await Firebase.initializeApp(options: FirebaseOptions(
+    //   apiKey: 'AIzaSyDFN-73p8zKVZbA0i5DtO215XzAb-xuGSE',
+    //   appId: '1:1000163153346:web:4f702a4b5adbd5c906b25b',
+    //   messagingSenderId: 'G-L1GNL2YV61',
+    //   projectId: 'ammart-8885e',
+    // ));
   }
   await Firebase.initializeApp();
   WidgetsFlutterBinding.ensureInitialized();

@@ -55,10 +55,109 @@
               "client_type": 3
             },
             {
-              "client_id": "943340280765-hj8700lrjdlppbq7hqfcarq3gj40qlm3.apps.googleusercontent.com",
+              "client_id": "943340280765-5ikm2r5qrsbbjs806fdsept2jggg7coh.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.pula.bazar.com"
+                "bundle_id": "com.destek.pulabazaar",
+                "app_store_id": "1638346160"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:943340280765:android:b1c25fd180d43236e350d4",
+        "android_client_info": {
+          "package_name": "com.pulabazaar.owner"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "943340280765-o40oev5n0d0tmahnih5p17pls0l7cbhr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCPet-L3vDbIisM3JpvQxN8d_-k34dPByo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "943340280765-o40oev5n0d0tmahnih5p17pls0l7cbhr.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "943340280765-5ikm2r5qrsbbjs806fdsept2jggg7coh.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.destek.pulabazaar",
+                "app_store_id": "1638346160"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:943340280765:android:b252cba77775b7c5e350d4",
+        "android_client_info": {
+          "package_name": "com.pulabazaar.store"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "943340280765-323jjdmcejr9rlppisqp2ddneon2s4is.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.pulabazaar.store",
+            "certificate_hash": "49cad7d51ca04a6142a0926d33556e1ee2034150"
+          }
+        },
+        {
+          "client_id": "943340280765-hjiob5oe5kkq7pbeudfclq8q8oqd5173.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.pulabazaar.store",
+            "certificate_hash": "6e7158d714430e4636a6dc256acb9972dffaee4f"
+          }
+        },
+        {
+          "client_id": "943340280765-mmp9ntnlct23mhtn9grha88kpt0o233t.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.pulabazaar.store",
+            "certificate_hash": "38dc07dd84ba23605d491bcf60b03b4fc29317bc"
+          }
+        },
+        {
+          "client_id": "943340280765-o40oev5n0d0tmahnih5p17pls0l7cbhr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCPet-L3vDbIisM3JpvQxN8d_-k34dPByo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "943340280765-o40oev5n0d0tmahnih5p17pls0l7cbhr.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "943340280765-5ikm2r5qrsbbjs806fdsept2jggg7coh.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.destek.pulabazaar",
+                "app_store_id": "1638346160"
               }
             }
           ]

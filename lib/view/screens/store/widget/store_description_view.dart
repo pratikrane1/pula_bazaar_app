@@ -1,3 +1,4 @@
+import 'package:universal_html/html.dart' as html;
 import 'package:flutter/foundation.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:share_plus/share_plus.dart';
@@ -46,20 +47,24 @@ class StoreDescriptionView extends StatelessWidget {
             SnackBar(content: new Text("whatsapp no installed")));
       }
     } else if(Platform.isWindows) {
-      if (await canLaunch(whatsappURL_WEB)) {
-        await launch(whatsappURL_WEB);
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: new Text("whatsapp no installed")));
-      }
+      html.window.open(whatsappURL_WEB,"_blank");
+
+      // if (await canLaunch(whatsappURL_WEB)) {
+      //   await launch(whatsappURL_WEB);
+      // } else {
+      //   ScaffoldMessenger.of(context).showSnackBar(
+      //       SnackBar(content: new Text("whatsapp no installed")));
+      // }
     }
     else if(kIsWeb){
-      if (await canLaunch(whatsappURL_WEB)) {
-        await launch(whatsappURL_WEB);
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: new Text("whatsapp no installed")));
-      }
+      html.window.open(whatsappURL_WEB,"_blank");
+
+      // if (await canLaunch(whatsappURL_WEB)) {
+      //   await launch(whatsappURL_WEB);
+      // } else {
+      //   ScaffoldMessenger.of(context).showSnackBar(
+      //       SnackBar(content: new Text("whatsapp no installed")));
+      // }
     }
     else {
       // android , web
@@ -253,8 +258,15 @@ class StoreDescriptionView extends StatelessWidget {
         InkWell(
           // onTap: () => _launchWhatsapp(context, store),
           onTap: () {
+            var whatsappNo = store.phone.toString();
+            var message = "Hi ${store.name}, I have a Query. Can you please help me?";
+
             if(store.phone != null){
-              _launchWhatsapp(context, store);
+              if(kIsWeb){
+                html.window.open('https://api.whatsapp.com/send?phone=${whatsappNo}&text=${message}',"_blank");
+              }else {
+                _launchWhatsapp(context, store);
+              }
             }else{
               Fluttertoast.showToast(msg: "Phone Number not available");
             }
