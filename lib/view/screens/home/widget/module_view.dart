@@ -24,46 +24,122 @@ class ModuleView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
 
+      SizedBox(height: Dimensions.PADDING_SIZE_LARGE),
+
+
+      Padding(
+        padding: EdgeInsets.symmetric(horizontal: Dimensions.PADDING_SIZE_SMALL),
+        // child: TitleWidget(title: 'welcome'.tr),
+        child: Row(
+          children: [
+            Text(
+              'welcome'.tr,
+              textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+              style: robotoRegular.copyWith(fontSize: Dimensions.fontSizeOverOverLarge,color: Colors.black.withOpacity(0.9)),
+            ),
+
+            Text(
+              'pula_bazaar'.tr,
+              textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+              style: robotoBold.copyWith(fontSize: Dimensions.fontSizeOverOverLarge,color: Theme.of(context).primaryColor),
+            ),
+          ],
+        ),
+      ),
+
+      SizedBox(height: Dimensions.PADDING_SIZE_EXTRA_SMALL),
+
       GetBuilder<BannerController>(builder: (bannerController) {
         return BannerView(isFeatured: true);
       }),
 
+      SizedBox(height: Dimensions.PADDING_SIZE_EXTRA_LARGE),
+
+
+
+
+      Padding(
+        padding: EdgeInsets.symmetric(horizontal: Dimensions.PADDING_SIZE_SMALL),
+        child: TitleWidget(title: 'are_you_looking_for'.tr),
+      ),
+
       splashController.moduleList != null ? splashController.moduleList.length > 0 ?
       GridView.builder(
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 3, mainAxisSpacing: Dimensions.PADDING_SIZE_SMALL,
-          crossAxisSpacing: Dimensions.PADDING_SIZE_SMALL, childAspectRatio: (1/1),
+          crossAxisCount: 2, mainAxisSpacing: Dimensions.PADDING_SIZE_EXTRA_SMALL,
+          crossAxisSpacing: Dimensions.PADDING_SIZE_SMALL, childAspectRatio: (1/1.3),
         ),
         padding: EdgeInsets.all(Dimensions.PADDING_SIZE_SMALL),
         itemCount: splashController.moduleList.length,
         shrinkWrap: true, physics: NeverScrollableScrollPhysics(),
         itemBuilder: (context, index) {
-          return InkWell(
-            onTap: () => splashController.switchModule(index, true),
-            child: Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(Dimensions.RADIUS_DEFAULT),
-                color: Theme.of(context).cardColor,
-                boxShadow: [BoxShadow(color: Colors.grey[Get.isDarkMode ? 700 : 200], spreadRadius: 1, blurRadius: 5)],
-              ),
+          return Container(
+            height: MediaQuery.of(context).size.height,
+            child: InkWell(
+              onTap: () => splashController.switchModule(index, true),
               child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
 
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(Dimensions.RADIUS_SMALL),
-                  child: CustomImage(
-                    image: '${splashController.configModel.baseUrls.moduleImageUrl}/${splashController.moduleList[index].icon}',
-                    height: 50, width: 50,
+                Container(
+                  height: MediaQuery.of(context).size.height /4.8,
+                  width: MediaQuery.of(context).size.width / 2.2,
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: Color(0xFFC791C4),
+                      width: 2
+                    ),
+                    borderRadius: BorderRadius.circular(Dimensions.RADIUS_LARGE),
+                    color: Color(0xFFE0C3DF),
+                    boxShadow: [BoxShadow(color: Colors.grey[Get.isDarkMode ? 700 : 200], spreadRadius: 1, blurRadius: 5)],
+                  ),
+
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(Dimensions.RADIUS_SMALL),
+                      child: CustomImage(
+                        image: '${splashController.configModel.baseUrls.moduleImageUrl}/${splashController.moduleList[index].icon}',
+                        height: 100, width: 100,
+                      ),
+                    ),
                   ),
                 ),
-                SizedBox(height: Dimensions.PADDING_SIZE_SMALL),
+                // SizedBox(height: Dimensions.PADDING_SIZE_SMALL),
+                // SizedBox(height: Dimensions.PADDING_SIZE_EXTRA_SMALL),
 
-                Center(child: Text(
-                  splashController.moduleList[index].moduleName,
-                  textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
-                  style: robotoMedium.copyWith(fontSize: Dimensions.fontSizeSmall),
-                )),
+                Flexible(
+                  child: Center(child: Text(
+                    splashController.moduleList[index].moduleName,
+                    textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                    style: robotoBold.copyWith(fontSize: Dimensions.fontSizeExtraLarge,color: Colors.black.withOpacity(0.8)),
+                  )),
+                ),
 
               ]),
+              // Container(
+              //   decoration: BoxDecoration(
+              //     borderRadius: BorderRadius.circular(Dimensions.RADIUS_DEFAULT),
+              //     color: Theme.of(context).cardColor,
+              //     boxShadow: [BoxShadow(color: Colors.grey[Get.isDarkMode ? 700 : 200], spreadRadius: 1, blurRadius: 5)],
+              //   ),
+              //   child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+              //
+              //     ClipRRect(
+              //       borderRadius: BorderRadius.circular(Dimensions.RADIUS_SMALL),
+              //       child: CustomImage(
+              //         image: '${splashController.configModel.baseUrls.moduleImageUrl}/${splashController.moduleList[index].icon}',
+              //         height: 50, width: 50,
+              //       ),
+              //     ),
+              //     SizedBox(height: Dimensions.PADDING_SIZE_SMALL),
+              //
+              //     Center(child: Text(
+              //       splashController.moduleList[index].moduleName,
+              //       textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+              //       style: robotoMedium.copyWith(fontSize: Dimensions.fontSizeSmall),
+              //     )),
+              //
+              //   ]),
+              // ),
             ),
           );
         },

@@ -120,6 +120,7 @@ class _HomeScreenState extends State<HomeScreen> {
         appBar: ResponsiveHelper.isDesktop(context) ? WebMenuBar() : null,
         endDrawer: MenuDrawer(),
         backgroundColor: ResponsiveHelper.isDesktop(context) ? Theme.of(context).cardColor : splashController.module == null
+            // ? Theme.of(context).backgroundColor : null,
             ? Theme.of(context).backgroundColor : null,
         body: _isParcel ? ParcelCategoryScreen() : SafeArea(
           child: RefreshIndicator(
@@ -185,14 +186,14 @@ class _HomeScreenState extends State<HomeScreen> {
                                 Icon(
                                   locationController.getUserAddress().addressType == 'home' ? Icons.home_filled
                                       : locationController.getUserAddress().addressType == 'office' ? Icons.work : Icons.location_on,
-                                  size: 20, color: Theme.of(context).textTheme.bodyText1.color,
+                                  size: 25, color: Theme.of(context).primaryColor,
                                 ),
                                 SizedBox(width: 10),
                                 Flexible(
                                   child: Text(
                                     locationController.getUserAddress().address,
                                     style: robotoRegular.copyWith(
-                                      color: Theme.of(context).textTheme.bodyText1.color, fontSize: Dimensions.fontSizeSmall,
+                                      color: Theme.of(context).textTheme.bodyText1.color, fontSize: Dimensions.fontSizeSmall, fontWeight: FontWeight.w500,
                                     ),
                                     maxLines: 1, overflow: TextOverflow.ellipsis,
                                   ),
@@ -235,16 +236,16 @@ class _HomeScreenState extends State<HomeScreen> {
                       child: Container(
                         padding: EdgeInsets.symmetric(horizontal: Dimensions.PADDING_SIZE_SMALL),
                         decoration: BoxDecoration(
+                          border: Border.all(
+                              color: Color(0xFFC791C4),
+                              width: 1
+                          ),
                           color: Theme.of(context).cardColor,
-                          borderRadius: BorderRadius.circular(Dimensions.RADIUS_SMALL),
+                          borderRadius: BorderRadius.circular(Dimensions.RADIUS_DEFAULT),
                           boxShadow: [BoxShadow(color: Colors.grey[Get.isDarkMode ? 800 : 200], spreadRadius: 1, blurRadius: 5)],
                         ),
                         child: Row(children: [
-                          Icon(
-                            Icons.search, size: 25,
-                            color: Theme.of(context).primaryColor,
-                          ),
-                          SizedBox(width: Dimensions.PADDING_SIZE_EXTRA_SMALL),
+
                           Expanded(child: Text(
                             Get.find<SplashController>().configModel.moduleConfig.module.showRestaurantText
                                 ? 'search_food_or_restaurant'.tr : 'search_item_or_store'.tr,
@@ -252,6 +253,11 @@ class _HomeScreenState extends State<HomeScreen> {
                               fontSize: Dimensions.fontSizeSmall, color: Theme.of(context).hintColor,
                             ),
                           )),
+                          Icon(
+                            Icons.search, size: 25,
+                            color: Theme.of(context).primaryColor,
+                          ),
+                          SizedBox(width: Dimensions.PADDING_SIZE_EXTRA_SMALL),
                         ]),
                       ),
                     ),

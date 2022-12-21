@@ -1,5 +1,8 @@
 {
   "connection_to_api_server_failed": "Connection to API server failed due to internet connection",
+  "welcome": "Welcome to",
+  "pula_bazaar": " PULA BAZAAR",
+  "are_you_looking_for": "Are you looking for?",
   "select_language": "Select Language",
   "save": "Save",
   "select_a_language": "Select a language",
