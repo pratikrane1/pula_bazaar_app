@@ -47,10 +47,12 @@ class AddressWidget extends StatelessWidget {
                   style: robotoMedium.copyWith(fontSize: Dimensions.fontSizeDefault, fontWeight: FontWeight.bold),
                 ),
                 SizedBox(height: Dimensions.PADDING_SIZE_EXTRA_SMALL),
-                Text(
-                  address.address,
-                  style: robotoRegular.copyWith(fontSize: Dimensions.fontSizeSmall, color: Colors.black.withOpacity(0.5)),
-                  maxLines: 1, overflow: TextOverflow.ellipsis,
+                Expanded(
+                  child: Text(
+                    address.address,
+                    style: robotoRegular.copyWith(fontSize: Dimensions.fontSizeSmall, color: Colors.black.withOpacity(0.5)),
+                    maxLines: 1, overflow: TextOverflow.ellipsis,
+                  ),
                 ),
               ]),
             ),
