@@ -1,3 +1,4 @@
+import 'package:flutter_html/flutter_html.dart';
 import 'package:universal_html/html.dart' as html;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -340,7 +341,10 @@ class _ItemDetailsScreenState extends State<ItemDetailsScreen> {
                     children: [
                       Text('description'.tr, style: robotoMedium),
                       SizedBox(height: Dimensions.PADDING_SIZE_EXTRA_SMALL),
-                      Text(itemController.item.description, style: robotoRegular),
+                      // Text(itemController.item.description, style: robotoRegular),
+                      Html(
+                        data: itemController.item.description,
+                      ),
                       SizedBox(height: Dimensions.PADDING_SIZE_LARGE),
                     ],
                   ) : SizedBox(),

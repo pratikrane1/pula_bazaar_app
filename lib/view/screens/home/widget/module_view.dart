@@ -31,6 +31,7 @@ class ModuleView extends StatelessWidget {
         padding: EdgeInsets.symmetric(horizontal: Dimensions.PADDING_SIZE_SMALL),
         // child: TitleWidget(title: 'welcome'.tr),
         child: Row(
+
           children: [
             Text(
               'welcome'.tr,
@@ -38,10 +39,12 @@ class ModuleView extends StatelessWidget {
               style: robotoRegular.copyWith(fontSize: Dimensions.fontSizeOverOverLarge,color: Colors.black.withOpacity(0.9)),
             ),
 
-            Text(
-              'pula_bazaar'.tr,
-              textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
-              style: robotoBold.copyWith(fontSize: Dimensions.fontSizeOverOverLarge,color: Theme.of(context).primaryColor),
+            Flexible(
+              child: Text(
+                'pula_bazaar'.tr,
+                textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                style: robotoBold.copyWith(fontSize: Dimensions.fontSizeOverOverLarge,color: Theme.of(context).primaryColor),
+              ),
             ),
           ],
         ),
@@ -67,7 +70,9 @@ class ModuleView extends StatelessWidget {
       GridView.builder(
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2, mainAxisSpacing: Dimensions.PADDING_SIZE_EXTRA_SMALL,
-          crossAxisSpacing: Dimensions.PADDING_SIZE_SMALL, childAspectRatio: (1/1.3),
+          crossAxisSpacing: Dimensions.PADDING_SIZE_SMALL,
+          mainAxisExtent: 240
+          // childAspectRatio: (1/1.5),
         ),
         padding: EdgeInsets.all(Dimensions.PADDING_SIZE_SMALL),
         itemCount: splashController.moduleList.length,
@@ -76,29 +81,33 @@ class ModuleView extends StatelessWidget {
           return Container(
             height: MediaQuery.of(context).size.height,
             child: InkWell(
-              onTap: () => splashController.switchModule(index, true),
+              // onTap: () => splashController.switchModule(index, true),
               child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
 
-                Container(
-                  height: MediaQuery.of(context).size.height /4.8,
-                  width: MediaQuery.of(context).size.width / 2.2,
-                  decoration: BoxDecoration(
-                    border: Border.all(
-                      color: Color(0xFFC791C4),
-                      width: 2
+                InkWell(
+                  onTap: () => splashController.switchModule(index, true),
+                  child: Container(
+                    // height: MediaQuery.of(context).size.height /4.8,
+                    height: MediaQuery.of(context).size.height /4.8,
+                    width: MediaQuery.of(context).size.width / 2.2,
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: Color(0xFFC791C4),
+                        width: 2
+                      ),
+                      borderRadius: BorderRadius.circular(Dimensions.RADIUS_LARGE),
+                      color: Color(0xFFE0C3DF),
+                      boxShadow: [BoxShadow(color: Colors.grey[Get.isDarkMode ? 700 : 200], spreadRadius: 1, blurRadius: 5)],
                     ),
-                    borderRadius: BorderRadius.circular(Dimensions.RADIUS_LARGE),
-                    color: Color(0xFFE0C3DF),
-                    boxShadow: [BoxShadow(color: Colors.grey[Get.isDarkMode ? 700 : 200], spreadRadius: 1, blurRadius: 5)],
-                  ),
 
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(Dimensions.RADIUS_SMALL),
-                      child: CustomImage(
-                        image: '${splashController.configModel.baseUrls.moduleImageUrl}/${splashController.moduleList[index].icon}',
-                        height: 100, width: 100,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(Dimensions.RADIUS_SMALL),
+                        child: CustomImage(
+                          image: '${splashController.configModel.baseUrls.moduleImageUrl}/${splashController.moduleList[index].icon}',
+                          height: 100, width: 100,
+                        ),
                       ),
                     ),
                   ),
