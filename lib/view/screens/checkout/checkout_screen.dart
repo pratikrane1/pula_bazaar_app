@@ -1634,11 +1634,9 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
 
                         scheduleAt: !storeController.store.scheduleOrder
                             ? null
-                            : (orderController.selectedDateSlot == 0 &&
-                                    orderController.selectedTimeSlot == 0)
+                            : (orderController.selectedDateSlot == 0 && orderController.selectedTimeSlot == 0)
                                 ? null
-                                : DateConverter.dateToDateAndTime(
-                                    _scheduleEndDate),
+                                : DateConverter.dateToDateAndTime(_scheduleEndDate),
                         orderAmount: total,
                         orderNote: _noteController.text,
                         orderType: orderController.orderType,
