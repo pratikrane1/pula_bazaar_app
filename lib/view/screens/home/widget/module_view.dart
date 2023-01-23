@@ -50,16 +50,7 @@ class ModuleView extends StatelessWidget {
         ),
       ),
 
-      SizedBox(height: Dimensions.PADDING_SIZE_EXTRA_SMALL),
-
-      GetBuilder<BannerController>(builder: (bannerController) {
-        return BannerView(isFeatured: true);
-      }),
-
-      SizedBox(height: Dimensions.PADDING_SIZE_EXTRA_LARGE),
-
-
-
+      SizedBox(height: Dimensions.PADDING_SIZE_DEFAULT),
 
       Padding(
         padding: EdgeInsets.symmetric(horizontal: Dimensions.PADDING_SIZE_SMALL),
@@ -210,6 +201,12 @@ class ModuleView extends StatelessWidget {
           ),
         ) : AddressShimmer(isEnabled: Get.find<AuthController>().isLoggedIn() && locationController.addressList == null);
       }),
+
+      GetBuilder<BannerController>(builder: (bannerController) {
+        return BannerView(isFeatured: true);
+      }),
+
+      SizedBox(height: Dimensions.PADDING_SIZE_DEFAULT),
 
       PopularStoreView(isPopular: false, isFeatured: true),
 
