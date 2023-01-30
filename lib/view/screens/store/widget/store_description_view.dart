@@ -17,6 +17,7 @@ import 'package:sixam_mart/view/base/custom_image.dart';
 import 'package:sixam_mart/view/base/custom_snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'dart:io' show Platform;
 
 import 'package:url_launcher/url_launcher.dart';
@@ -273,6 +274,8 @@ class StoreDescriptionView extends StatelessWidget {
           },
           child: Column(children: [
             Icon(Icons.whatsapp, color: Theme.of(context).primaryColor, size: 20),
+            ///30 Jan 2023
+            // FaIcon(FontAwesomeIcons.whatsapp, color: Theme.of(context).primaryColor, size: 20),
             SizedBox(width: Dimensions.PADDING_SIZE_EXTRA_SMALL),
             Text('Chat'.tr, style: robotoRegular.copyWith(fontSize: Dimensions.fontSizeSmall, color: _textColor)),
           ]),

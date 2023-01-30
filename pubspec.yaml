@@ -1,7 +1,7 @@
 name: sixam_mart
 description: A Multi-vendor Food. Grocery, eCommerce, Pharmacy & Parcel service.
 publish_to: 'none' #
-version: 1.0.2+6
+version: 1.0.2+7
 
 environment:
   sdk: ">=2.7.0 <3.0.0"
@@ -27,7 +27,10 @@ dependencies:
   geolocator: ^8.2.1
   google_maps_flutter: ^2.1.5
   google_maps_flutter_web: ^0.3.2
-  flutter_typeahead: ^4.0.0
+  flutter_typeahead:
+    git:
+      url: https://github.com/Bavest/flutter_typeahead.git
+      ref: ffe2ee391888fa4b0a51bd2027e91e21ec85ec6d
   carousel_slider: ^4.0.0
   shimmer_animation: ^2.1.0+1
   image_picker: ^0.8.5+3
@@ -54,6 +57,7 @@ dependencies:
   fluttertoast: ^8.0.9
   uni_links: ^0.5.1
   date_time_picker: ^2.1.0
+  font_awesome_flutter: ^10.3.0
 
 dev_dependencies:
   flutter_test:

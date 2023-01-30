@@ -34,7 +34,7 @@ class _CategoryItemScreenState extends State<CategoryItemScreen> with TickerProv
   void initState() {
     super.initState();
 
-    _tabController = TabController(length: 2, initialIndex: 0, vsync: this)..addListener(() { setState(() {});});
+    _tabController = TabController(length: 2, initialIndex: 0, vsync: this);
     Get.find<CategoryController>().getSubCategoryList(widget.categoryID);
     Get.find<CategoryController>().getCategoryStoreList(
       Get.find<CategoryController>().subCategoryIndex == 0 ? widget.categoryID
