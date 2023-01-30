@@ -24,6 +24,7 @@ import 'package:sixam_mart/view/base/item_view.dart';
 import 'package:sixam_mart/view/base/menu_drawer.dart';
 import 'package:sixam_mart/view/base/paginated_list_view.dart';
 import 'package:sixam_mart/view/base/web_menu_bar.dart';
+import 'package:sixam_mart/view/screens/home/theme1/category_view1.dart';
 import 'package:sixam_mart/view/screens/home/theme1/theme1_home_screen.dart';
 import 'package:sixam_mart/view/screens/home/web_home_screen.dart';
 import 'package:sixam_mart/view/screens/home/widget/filter_view.dart';
@@ -272,7 +273,8 @@ class _HomeScreenState extends State<HomeScreen> {
                     Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
 
                       BannerView(isFeatured: false),
-                      CategoryView(),
+                      //CategoryView(),
+                      CategoryView1(),
                       PopularStoreView(isPopular: true, isFeatured: false),
                       ItemCampaignView(),
                       PopularItemView(isPopular: true),

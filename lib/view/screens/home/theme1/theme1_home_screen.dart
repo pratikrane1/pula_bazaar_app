@@ -108,11 +108,21 @@ class Theme1HomeScreen extends StatelessWidget {
               onTap: () => Get.toNamed(RouteHelper.getSearchRoute()),
               child: Container(
                 padding: EdgeInsets.symmetric(horizontal: Dimensions.PADDING_SIZE_SMALL),
+                // decoration: BoxDecoration(
+                //   color: Theme.of(context).cardColor,
+                //   borderRadius: BorderRadius.circular(25),
+                //   boxShadow: [BoxShadow(color: Colors.grey[Get.isDarkMode ? 800 : 200], spreadRadius: 1, blurRadius: 5)],
+                // ),
                 decoration: BoxDecoration(
+                  border: Border.all(
+                      color: Color(0xFFC791C4),
+                      width: 1
+                  ),
                   color: Theme.of(context).cardColor,
-                  borderRadius: BorderRadius.circular(25),
+                  borderRadius: BorderRadius.circular(Dimensions.RADIUS_DEFAULT),
                   boxShadow: [BoxShadow(color: Colors.grey[Get.isDarkMode ? 800 : 200], spreadRadius: 1, blurRadius: 5)],
                 ),
+
                 child: Row(children: [
                   SizedBox(width: Dimensions.PADDING_SIZE_EXTRA_SMALL),
                   Icon(
