@@ -84,7 +84,8 @@ class WebHomeScreen extends StatelessWidget {
                       return Row(children: [
                         Expanded(child: Text(
                           Get.find<SplashController>().configModel.moduleConfig.module.showRestaurantText
-                              ? 'all_restaurants'.tr : 'all_stores'.tr,
+                              // ? 'all_restaurants'.tr : 'all_stores'.tr,
+                              ? 'all_stores'.tr : 'all_stores'.tr,
                           style: robotoMedium.copyWith(fontSize: 24),
                         )),
                         storeController.storeModel != null ? PopupMenuButton(

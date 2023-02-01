@@ -33,7 +33,8 @@ class WebPopularStoreView extends StatelessWidget {
         Padding(
           padding: EdgeInsets.fromLTRB(10, 15, 10, 10),
           child: TitleWidget(title: isPopular ? Get.find<SplashController>().configModel.moduleConfig.module.showRestaurantText
-              ? 'popular_restaurants'.tr : 'popular_stores'.tr : '${'new_on'.tr} ${AppConstants.APP_NAME}'),
+              // ? 'popular_restaurants'.tr : 'popular_stores'.tr : '${'new_on'.tr} ${AppConstants.APP_NAME}'),
+              ? 'popular_stores'.tr : 'popular_stores'.tr : '${'new_on'.tr} ${AppConstants.APP_NAME}'),
         ),
 
         _storeList != null ? GridView.builder(
