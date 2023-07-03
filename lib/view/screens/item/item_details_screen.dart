@@ -325,9 +325,9 @@ class _ItemDetailsScreenState extends State<ItemDetailsScreen> {
                               itemController.item.storePhone,
                               style: robotoRegular.copyWith(fontSize: Dimensions.fontSizeDefault),
                             ),
-                            Icon(Icons.whatsapp, color: Theme.of(context).primaryColor, size: 20),
+                            // Icon(Icons.whatsapp, color: Theme.of(context).primaryColor, size: 20),
                             ///30 Jan 2023
-                            // FaIcon(FontAwesomeIcons.whatsapp, color: Theme.of(context).primaryColor, size: 20),
+                            FaIcon(FontAwesomeIcons.whatsapp, color: Theme.of(context).primaryColor, size: 20),
                           ],
                         ),
                       ),
