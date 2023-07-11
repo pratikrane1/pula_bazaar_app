@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:universal_html/html.dart' as html;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -323,7 +324,7 @@ class _ItemDetailsScreenState extends State<ItemDetailsScreen> {
                               itemController.item.storePhone,
                               style: robotoRegular.copyWith(fontSize: Dimensions.fontSizeDefault),
                             ),
-                            Icon(Icons.whatsapp, color: Theme.of(context).primaryColor, size: 20),
+                            Icon(CupertinoIcons.chat_bubble_text, color: Theme.of(context).primaryColor, size: 20),
                           ],
                         ),
                       ),

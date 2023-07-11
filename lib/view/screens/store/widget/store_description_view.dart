@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:universal_html/html.dart' as html;
 import 'package:flutter/foundation.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -20,6 +21,7 @@ import 'package:get/get.dart';
 import 'dart:io' show Platform;
 
 import 'package:url_launcher/url_launcher.dart';
+import 'package:cupertino_icons/cupertino_icons.dart';
 
 import '../../../../main.dart';
 
@@ -272,7 +274,7 @@ class StoreDescriptionView extends StatelessWidget {
             }
           },
           child: Column(children: [
-            Icon(Icons.whatsapp, color: Theme.of(context).primaryColor, size: 20),
+            Icon(CupertinoIcons.chat_bubble_text, color: Theme.of(context).primaryColor, size: 20),
             SizedBox(width: Dimensions.PADDING_SIZE_EXTRA_SMALL),
             Text('Chat'.tr, style: robotoRegular.copyWith(fontSize: Dimensions.fontSizeSmall, color: _textColor)),
           ]),

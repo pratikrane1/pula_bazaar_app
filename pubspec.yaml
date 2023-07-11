@@ -14,6 +14,7 @@ dependencies:
 
   get: ^4.6.5
   shared_preferences: ^2.0.11
+  cupertino_icons: ^1.0.5
   connectivity: ^3.0.6
   firebase_auth: ^4.1.4
   firebase_core: ^2.3.0
@@ -21,13 +22,14 @@ dependencies:
   firebase_messaging: ^14.1.2 # will satisfy your firebase core things that depend on ^4.5.1
 #  firebase_messaging: ^12.0.1
   flutter_local_notifications: ^9.5.3+1
+  modal_bottom_sheet:
   path_provider: ^2.0.8
   url_strategy: ^0.2.0
   pin_code_fields: ^7.3.0
   geolocator: ^8.2.1
   google_maps_flutter: ^2.1.5
   google_maps_flutter_web: ^0.3.2
-  flutter_typeahead: ^4.0.0
+  flutter_typeahead:
   carousel_slider: ^4.0.0
   shimmer_animation: ^2.1.0+1
   image_picker: ^0.8.5+3
