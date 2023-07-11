@@ -31,6 +31,7 @@ class PlaceOrderBody {
   String _floor;
   String _dmTips;
   String _prodId;
+  String _datetimeval;
 
   PlaceOrderBody(
       {      @required String prodId,
@@ -59,6 +60,7 @@ class PlaceOrderBody {
         @required String house,
         @required String floor,
         @required String dmTips,
+        @required String datetimeval,
       }) {
     this._prodId = prodId;
     this._cart = cart;
@@ -86,6 +88,7 @@ class PlaceOrderBody {
     this._house = house;
     this._floor = floor;
     this._dmTips = dmTips;
+    this._datetimeval = datetimeval;
   }
 
   String get prodId => _prodId;
@@ -113,6 +116,7 @@ class PlaceOrderBody {
   String get house => _house;
   String get floor => _floor;
   String get dmTips => _dmTips;
+  String get datetimeval => _datetimeval;
 
   PlaceOrderBody.fromJson(Map<String, dynamic> json) {
     if (json['cart'] != null) {
@@ -146,6 +150,7 @@ class PlaceOrderBody {
     _house = json['apartment'];
     _floor = json['floor'];
     _dmTips = json['dm_tips'];
+    _datetimeval = json['datetimeval'];
   }
 
   Map<String, String> toJson() {
@@ -194,6 +199,7 @@ class PlaceOrderBody {
     data['house'] = this._house;
     data['floor'] = this._floor;
     data['dm_tips'] = this._dmTips;
+    data['datetimeval'] = this._datetimeval;
     return data;
   }
 }

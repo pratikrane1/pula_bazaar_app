@@ -130,6 +130,9 @@ class _CartScreenState extends State<CartScreen> {
 
               ResponsiveHelper.isDesktop(context) ? SizedBox.shrink() : CheckoutButton(cartController: cartController, availableList: _availableList),
 
+              SizedBox(
+                height: 20,
+              )
             ],
           ) : NoDataScreen(isCart: true, text: '', showFooter: true);
         },

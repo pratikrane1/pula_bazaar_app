@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:flutter/foundation.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:sixam_mart/controller/auth_controller.dart';
 import 'package:sixam_mart/controller/cart_controller.dart';
@@ -138,6 +139,11 @@ class MyApp extends StatelessWidget {
             getPages: RouteHelper.routes,
             defaultTransition: Transition.topLevel,
             transitionDuration: Duration(milliseconds: 500),
+            localizationsDelegates: [
+              GlobalWidgetsLocalizations.delegate,
+              GlobalMaterialLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+            ],
           );
         });
       });
@@ -178,10 +184,10 @@ class DynamicLinkService {
         packageName: "com.pula.bazaar",
         minimumVersion: 0,
       ),
-      // iosParameters: IOSParameters(
-      //   bundleId: firebaseDynamicLinkConfig['iOSBundleId'],
-      //   minimumVersion: firebaseDynamicLinkConfig['iOSAppMinimumVersion'],
-      // ),
+      iosParameters: IOSParameters(
+        bundleId: "com.destek.pulabazaar",
+        minimumVersion: '0',
+      ),
       socialMetaTagParameters: SocialMetaTagParameters(
         title: title,
         imageUrl: Uri.parse(image),

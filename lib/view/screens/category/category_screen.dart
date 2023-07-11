@@ -56,7 +56,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
                     ClipRRect(
                       borderRadius: BorderRadius.circular(Dimensions.RADIUS_SMALL),
                       child: CustomImage(
-                        height: 50, width: 50, fit: BoxFit.cover,
+                        height: 80, width: 80, fit: BoxFit.cover,
                         image: '${Get.find<SplashController>().configModel.baseUrls.categoryImageUrl}/${catController.categoryList[index].image}',
                       ),
                     ),

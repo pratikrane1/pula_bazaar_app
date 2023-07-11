@@ -114,18 +114,10 @@ class _SplashScreenState extends State<SplashScreen> {
     return Scaffold(
       key: _globalKey,
       body: GetBuilder<SplashController>(builder: (splashController) {
-        return Center(
-          child: splashController.hasConnection ? SingleChildScrollView(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                // Image.asset(Images.logo, width: 200),
-                Image.asset(Images.logo, fit: BoxFit.cover,),
-                SizedBox(height: Dimensions.PADDING_SIZE_SMALL),
-                // Text(AppConstants.APP_NAME, style: robotoMedium.copyWith(fontSize: 25)),
-              ],
-            ),
-          ) : NoInternetScreen(child: SplashScreen(orderID: widget.orderID)),
+        return Container(
+          child: splashController.hasConnection ?
+          Image.asset(Images.splash, height: MediaQuery.of(context).size.height,width: MediaQuery.of(context).size.width, fit: BoxFit.cover, )
+              : NoInternetScreen(child: SplashScreen(orderID: widget.orderID)),
         );
       }),
     );

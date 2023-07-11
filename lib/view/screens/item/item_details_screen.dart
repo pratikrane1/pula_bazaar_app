@@ -1,4 +1,4 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:universal_html/html.dart' as html;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -24,6 +24,7 @@ import 'package:sixam_mart/view/screens/item/widget/details_app_bar.dart';
 import 'package:sixam_mart/view/screens/item/widget/details_web_view.dart';
 import 'package:sixam_mart/view/screens/item/widget/item_image_view.dart';
 import 'package:sixam_mart/view/screens/item/widget/item_title_view.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'dart:io' show Platform;
 
 import 'package:url_launcher/url_launcher.dart';
@@ -324,7 +325,9 @@ class _ItemDetailsScreenState extends State<ItemDetailsScreen> {
                               itemController.item.storePhone,
                               style: robotoRegular.copyWith(fontSize: Dimensions.fontSizeDefault),
                             ),
-                            Icon(CupertinoIcons.chat_bubble_text, color: Theme.of(context).primaryColor, size: 20),
+                            // Icon(Icons.whatsapp, color: Theme.of(context).primaryColor, size: 20),
+                            ///30 Jan 2023
+                            FaIcon(FontAwesomeIcons.whatsapp, color: Theme.of(context).primaryColor, size: 20),
                           ],
                         ),
                       ),
@@ -341,7 +344,10 @@ class _ItemDetailsScreenState extends State<ItemDetailsScreen> {
                     children: [
                       Text('description'.tr, style: robotoMedium),
                       SizedBox(height: Dimensions.PADDING_SIZE_EXTRA_SMALL),
-                      Text(itemController.item.description, style: robotoRegular),
+                      // Text(itemController.item.description, style: robotoRegular),
+                      Html(
+                        data: itemController.item.description,
+                      ),
                       SizedBox(height: Dimensions.PADDING_SIZE_LARGE),
                     ],
                   ) : SizedBox(),

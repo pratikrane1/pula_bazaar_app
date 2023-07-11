@@ -26,8 +26,11 @@ class AddressWidget extends StatelessWidget {
               : Dimensions.PADDING_SIZE_SMALL),
           decoration: BoxDecoration(
             color: fromCheckout ? null : Theme.of(context).cardColor,
-            borderRadius: BorderRadius.circular(Dimensions.RADIUS_SMALL),
-            border: fromCheckout ? Border.all(color: Theme.of(context).disabledColor, width: 1) : null,
+            borderRadius: BorderRadius.circular(Dimensions.RADIUS_LARGE),
+            border: fromCheckout ? Border.all(color: Theme.of(context).disabledColor, width: 1) : Border.all(
+                color: Color(0xFFC791C4),
+                width: 1
+            ),
             boxShadow: fromCheckout ? null : [BoxShadow(color: Colors.grey[Get.isDarkMode ? 800 : 200], blurRadius: 5, spreadRadius: 1)],
           ),
           child: Row(mainAxisSize: MainAxisSize.min, children: [
@@ -41,13 +44,15 @@ class AddressWidget extends StatelessWidget {
               child: Column(crossAxisAlignment: CrossAxisAlignment.start, mainAxisAlignment: MainAxisAlignment.center, children: [
                 Text(
                   address.addressType.tr,
-                  style: robotoMedium.copyWith(fontSize: Dimensions.fontSizeSmall),
+                  style: robotoMedium.copyWith(fontSize: Dimensions.fontSizeDefault, fontWeight: FontWeight.bold),
                 ),
                 SizedBox(height: Dimensions.PADDING_SIZE_EXTRA_SMALL),
-                Text(
-                  address.address,
-                  style: robotoRegular.copyWith(fontSize: Dimensions.fontSizeExtraSmall, color: Theme.of(context).disabledColor),
-                  maxLines: 1, overflow: TextOverflow.ellipsis,
+                Expanded(
+                  child: Text(
+                    address.address,
+                    style: robotoRegular.copyWith(fontSize: Dimensions.fontSizeSmall, color: Colors.black.withOpacity(0.5)),
+                    maxLines: 1, overflow: TextOverflow.ellipsis,
+                  ),
                 ),
               ]),
             ),

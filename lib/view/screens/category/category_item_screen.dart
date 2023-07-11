@@ -36,6 +36,11 @@ class _CategoryItemScreenState extends State<CategoryItemScreen> with TickerProv
 
     _tabController = TabController(length: 2, initialIndex: 0, vsync: this);
     Get.find<CategoryController>().getSubCategoryList(widget.categoryID);
+    Get.find<CategoryController>().getCategoryStoreList(
+      Get.find<CategoryController>().subCategoryIndex == 0 ? widget.categoryID
+          : Get.find<CategoryController>().subCategoryList[Get.find<CategoryController>().subCategoryIndex].id.toString(),
+      1, Get.find<CategoryController>().type, false,
+    );
     scrollController?.addListener(() {
       if (scrollController.position.pixels == scrollController.position.maxScrollExtent
           && Get.find<CategoryController>().categoryItemList != null
@@ -215,7 +220,8 @@ class _CategoryItemScreenState extends State<CategoryItemScreen> with TickerProv
                   tabs: [
                     Tab(text: 'item'.tr),
                     Tab(text: Get.find<SplashController>().configModel.moduleConfig.module.showRestaurantText
-                        ? 'restaurants'.tr : 'stores'.tr),
+                        // ? 'restaurants'.tr : 'stores'.tr),
+                        ? 'stores'.tr : 'stores'.tr),
                   ],
                 ),
               )),
@@ -260,6 +266,11 @@ class _CategoryItemScreenState extends State<CategoryItemScreen> with TickerProv
                           );
                         }else {
                           catController.getCategoryItemList(
+                            catController.subCategoryIndex == 0 ? widget.categoryID
+                                : catController.subCategoryList[catController.subCategoryIndex].id.toString(),
+                            1, catController.type, false,
+                          );
+                          catController.getCategoryStoreList(
                             catController.subCategoryIndex == 0 ? widget.categoryID
                                 : catController.subCategoryList[catController.subCategoryIndex].id.toString(),
                             1, catController.type, false,

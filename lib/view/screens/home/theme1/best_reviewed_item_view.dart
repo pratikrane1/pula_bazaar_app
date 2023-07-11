@@ -73,6 +73,7 @@ class BestReviewedItemView extends StatelessWidget {
                             inLeft: false,
                           ),
                           itemController.isAvailable(_itemList[index]) ? SizedBox() : NotAvailableWidget(isStore: true),
+                          _itemList[index].avgRating != 0 ?
                           Positioned(
                             top: Dimensions.PADDING_SIZE_EXTRA_SMALL, left: Dimensions.PADDING_SIZE_EXTRA_SMALL,
                             child: Container(
@@ -87,7 +88,7 @@ class BestReviewedItemView extends StatelessWidget {
                                 Text(_itemList[index].avgRating.toStringAsFixed(1), style: robotoRegular),
                               ]),
                             ),
-                          ),
+                          ):SizedBox(),
                         ]),
 
                         Expanded(
