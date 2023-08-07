@@ -166,18 +166,32 @@ class ItemTitleView extends StatelessWidget {
             ),
             const SizedBox(height: Dimensions.PADDING_SIZE_EXTRA_SMALL),
 
-            Text(
+            itemController.item.price == 0
+                ? Row(
+                  children: [
+                    Text("Price :"),
+                    //Text(" Please go to the enquiry"),
+                    Text(
+                    itemController.item.priceShortDesc != null
+                          ?"${itemController.item.priceShortDesc}"
+                          :Text("Please go to the enquiry")
+                    )
+                  ],
+                )
+            :Text(
               '${PriceConverter.convertPrice(_startingPrice, discount: item.discount, discountType: item.discountType)}'
                   '${_endingPrice!= null ? ' - ${PriceConverter.convertPrice(_endingPrice, discount: item.discount, discountType: item.discountType)}' : ''}',
               style: robotoMedium.copyWith(color: Theme.of(context).primaryColor, fontSize: Dimensions.fontSizeLarge),
             ),
             SizedBox(height: 5),
 
-            item.discount > 0 ? Text(
+            item.discount > 0
+                ? Text(
               '${PriceConverter.convertPrice(_startingPrice)}'
                   '${_endingPrice!= null ? ' - ${PriceConverter.convertPrice(_endingPrice)}' : ''}',
               style: robotoRegular.copyWith(color: Theme.of(context).hintColor, decoration: TextDecoration.lineThrough),
-            ) : SizedBox(),
+            )
+                : SizedBox(),
             SizedBox(height: item.discount > 0 ? 5 : 0),
 
             Row(children: [

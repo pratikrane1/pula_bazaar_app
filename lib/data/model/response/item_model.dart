@@ -35,6 +35,7 @@ class Item {
   String name;
   String description;
   String image;
+  String priceShortDesc;
   List<String> images;
   int categoryId;
   List<CategoryIds> categoryIds;
@@ -67,6 +68,7 @@ class Item {
       {this.id,
         this.name,
         this.description,
+        this.priceShortDesc,
         this.image,
         this.images,
         this.categoryId,
@@ -100,6 +102,7 @@ class Item {
     id = json['id'];
     name = json['name'];
     description = json['description'];
+    priceShortDesc = json['p_short_desc'];
     image = json['image'];
     images = json['images'] != null ? json['images'].cast<String>() : [];
     categoryId = json['category_id'];
@@ -155,6 +158,7 @@ class Item {
     data['id'] = this.id;
     data['name'] = this.name;
     data['description'] = this.description;
+    data['p_short_desc'] = this.priceShortDesc;
     data['image'] = this.image;
     data['images'] = this.images;
     data['category_id'] = this.categoryId;

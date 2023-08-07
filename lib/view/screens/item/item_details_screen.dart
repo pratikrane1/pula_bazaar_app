@@ -274,7 +274,16 @@ class _ItemDetailsScreenState extends State<ItemDetailsScreen> {
                   Row(children: [
                     Text('${'total_amount'.tr}:', style:robotoMedium.copyWith(fontSize: Dimensions.fontSizeLarge)),
                     SizedBox(width: Dimensions.PADDING_SIZE_EXTRA_SMALL),
-                    Text(PriceConverter.convertPrice(_priceWithAddons ?? 0.0), style:robotoBold.copyWith(
+
+                    itemController.item.price == 0
+                    //? Text("Please go to the enquiry")
+
+                    ?Text(
+                        itemController.item.priceShortDesc != null
+                        ?"${itemController.item.priceShortDesc}"
+                            :Text("Please go to the enquiry")
+                    )
+                    :Text(PriceConverter.convertPrice(_priceWithAddons ?? 0.0), style:robotoBold.copyWith(
                       color: Theme.of(context).primaryColor, fontSize: Dimensions.fontSizeLarge,
                     )),
                   ]),
@@ -401,7 +410,39 @@ class _ItemDetailsScreenState extends State<ItemDetailsScreen> {
               )))),
             )),
 
-            Container(
+            itemController.item.price == 0
+                ? Container(
+              width: 1170,
+              color: Colors.purple,
+              padding: EdgeInsets.all(Dimensions.PADDING_SIZE_SMALL),
+
+              child: InkWell(
+                onTap: (){
+                  var whatsappNo = itemController.item.storePhone.toString();
+                  var message = "Hi ${itemController.item.storeName}, I have a Query. Can you please help me?";
+
+                  if(kIsWeb){
+                    html.window.open('https://api.whatsapp.com/send?phone=${whatsappNo}&text=${message}',"_blank");
+                  }else {
+                    _launchWhatsapp(context, itemController.item);
+                  }
+                },
+                child: Row(
+                  children: [
+                    SizedBox(width:130),
+                    Text(
+                      // itemController.item.storePhone,
+                      "Enquiry",
+                      style: robotoRegular.copyWith(fontSize:18,fontWeight: FontWeight.bold,color:Colors.white),
+                    ),
+                    // Icon(Icons.whatsapp, color: Theme.of(context).primaryColor, size: 20),
+                    ///30 Jan 2023
+                    // FaIcon(FontAwesomeIcons.whatsapp, color: Theme.of(context).primaryColor, size: 20),
+                  ],
+                ),
+              ),
+            )
+            :Container(
               width: 1170,
               padding: EdgeInsets.all(Dimensions.PADDING_SIZE_SMALL),
               child: CustomButton(
@@ -437,7 +478,7 @@ class _ItemDetailsScreenState extends State<ItemDetailsScreen> {
                   }
                 } : null,
               ),
-            ),
+            )
 
           ]) : Center(child: CircularProgressIndicator()),
         );
